@@ -60,7 +60,7 @@
             <div class="p-6 border-b border-white/10">
                 <h1 class="text-2xl font-bold flex items-center gap-2 tracking-tight">
                     <i class="bi bi-camera-fill"></i>
-                    PHOTODASH
+                    MSJ-BOOTH
                 </h1>
                 <button @click="fetchQueue" class="mt-4 w-full bg-white text-black font-semibold hover:bg-zinc-200 px-4 py-2 rounded-lg transition flex items-center justify-center gap-2">
                     <i class="bi bi-arrow-clockwise"></i>
@@ -76,12 +76,21 @@
                     <div class="flex justify-between items-center mb-1">
                         <strong class="font-semibold">{{ c.name }}</strong>
                         <span class="px-2 py-0.5 rounded text-[10px] uppercase tracking-wider font-bold"
+
                               :class="{
-                                  'bg-zinc-800 text-zinc-300 border border-zinc-700': c.status.startsWith('Registered'),
-                                  'bg-white text-black': c.status.startsWith('Shooting'),
-                                  'bg-zinc-400 text-black': c.status.startsWith('Ready')
+                                  'bg-zinc-800 text-zinc-300 border border-zinc-700': c.status === 'ลงทะเบียนแล้ว' || c.status === 'Registered',
+                                  'bg-blue-600 text-white': c.status === 'กำลังถ่าย' || c.status === 'Shooting',
+                                  'bg-yellow-500 text-black': c.status === 'รอปริ้น' || c.status === 'WaitingPrint',
+                                  'bg-orange-500 text-white': c.status === 'รอส่งมอบ' || c.status === 'WaitingDeliver',
+                                  'bg-green-600 text-white': c.status === 'ส่งมอบแล้ว' || c.status === 'Delivered'
                               }">
-                            {{ c.status }}
+                            {{ 
+                                c.status === 'Registered' ? 'ลงทะเบียนแล้ว' :
+                                c.status === 'Shooting' ? 'กำลังถ่าย' :
+                                c.status === 'WaitingPrint' ? 'รอปริ้น' :
+                                c.status === 'WaitingDeliver' ? 'รอส่งมอบ' :
+                                c.status === 'Delivered' ? 'ส่งมอบแล้ว' : c.status
+                            }}
                         </span>
                     </div>
                     <small class="text-xs font-mono opacity-60">{{ c.customer_code }}</small>
@@ -119,10 +128,18 @@
                                 </button>
                                 <span class="text-zinc-500 font-medium">แท่ง</span>
                             </div>
+                            
+                            <button v-if="selectedCustomer.status === 'รอส่งมอบ'" 
+                                    @click="markDelivered" 
+                                    class="bg-green-600 text-white hover:bg-green-700 px-6 py-3 rounded-xl transition flex items-center gap-2 shadow-lg">
+                                <i class="bi bi-check-lg"></i>
+                                ส่งมอบแล้ว
+                            </button>
+                            
                             <button @click="resetSession" 
                                     class="border border-red-200 text-red-500 hover:bg-red-50 px-6 py-3 rounded-xl transition flex items-center gap-2">
                                 <i class="bi bi-x-circle"></i>
-                                จบเซสชัน
+                                ปิดหน้าต่าง
                             </button>
                         </div>
                     </div>
@@ -288,6 +305,33 @@
         </div>
         
         <canvas id="stripCanvas" width="600" height="1800"></canvas>
+
+        <!-- Delivery Confirmation Modal -->
+        <div v-if="showDeliverModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="showDeliverModal = false"></div>
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md relative z-10 overflow-hidden text-center">
+                <div class="p-8">
+                    <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">ยืนยันการส่งมอบ</h3>
+                    <p class="text-zinc-500 mb-6">
+                        คุณต้องการยืนยันว่าได้ส่งมอบรูปภาพให้ลูกค้า<br>
+                        <strong>{{ selectedCustomer?.name }}</strong> แล้วใช่หรือไม่?
+                    </p>
+                    <div class="flex gap-3">
+                        <button @click="showDeliverModal = false" 
+                                class="flex-1 py-3 rounded-xl border border-zinc-200 text-zinc-700 hover:bg-zinc-50 font-medium transition">
+                            ยกเลิก
+                        </button>
+                        <button @click="confirmDeliver" 
+                                class="flex-1 py-3 rounded-xl bg-green-600 text-white hover:bg-green-700 font-bold shadow-lg transition">
+                            ยืนยัน (จบงาน)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -300,6 +344,8 @@
                 shots: [],
                 countdown: 0,
                 isShooting: false,
+                isShooting: false,
+                showDeliverModal: false,
                 dateText: new Date().toLocaleDateString('en-GB'),
                 backgroundType: 'color', 
                 backgroundColor: '#ffeaa7',
@@ -367,6 +413,12 @@
                 selectCustomer(c) {
                     this.selectedCustomer = c;
                     this.shots = [];
+                    // Move to 'Shooting' if just registered
+                    if (c.status === 'ลงทะเบียนแล้ว' || c.status === 'Registered') {
+                        this.updateStatus(c.customer_code, 'กำลังถ่าย');
+                        c.status = 'กำลังถ่าย'; // local update
+                    }
+                    
                     axios.get(`api.php?action=get_images&id=${c.customer_code}`)
                         .then(res => {
                             if (res.data.images && res.data.images.length > 0) {
@@ -375,7 +427,6 @@
                                 setTimeout(() => this.drawStrip(), 500);
                             } else {
                                 this.currentStage = 'Capture';
-                                this.updateStatus(c.customer_code, 'Shooting');
                                 this.$nextTick(() => {
                                     this.startCamera();
                                 });
@@ -417,6 +468,9 @@
                 },
                 updateStatus(id, status) {
                     axios.post('api.php?action=update_status', { id, status });
+                    if(this.selectedCustomer && this.selectedCustomer.customer_code === id) {
+                        this.selectedCustomer.status = status;
+                    }
                 },
                 updateQty() {
                    axios.post('api.php?action=update_qty', { id: this.selectedCustomer.customer_code, qty: this.selectedCustomer.quantity });
@@ -434,6 +488,7 @@
                 retakeAll() { this.shots = []; },
                 processStrip() {
                     this.currentStage = 'Print';
+                    this.updateStatus(this.selectedCustomer.customer_code, 'รอปริ้น');
                     setTimeout(() => this.drawStrip(), 100);
                 },
                 handleBackgroundUpload(e) {
@@ -525,9 +580,17 @@
                 },
                 regenerateStrip() { this.drawStrip(); },
                 printA4() {
-                    this.updateStatus(this.selectedCustomer.customer_code, 'Completed');
+                    this.updateStatus(this.selectedCustomer.customer_code, 'รอส่งมอบ');
                     const element = document.getElementById('print-wrapper');
                     this.printWindow(element.outerHTML);
+                },
+                markDelivered() {
+                    this.showDeliverModal = true;
+                },
+                confirmDeliver() {
+                    this.updateStatus(this.selectedCustomer.customer_code, 'ส่งมอบแล้ว');
+                    this.showDeliverModal = false;
+                    this.resetSession();
                 },
                 printWindow(html) {
                     try {

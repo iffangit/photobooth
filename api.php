@@ -15,11 +15,16 @@ if ($action === 'register' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     // Generate Code: YYYYMMDD-HHmm
     $code = date('Ymd-His'); 
 
-    $stmt = $pdo->prepare("INSERT INTO queue (customer_code, name, contact) VALUES (?, ?, ?)");
-    if ($stmt->execute([$code, $name, $contact])) {
-        echo json_encode(['success' => true, 'id' => $code]);
-    } else {
-        echo json_encode(['success' => false, 'error' => 'Insert Failed']);
+    try {
+        $stmt = $pdo->prepare("INSERT INTO queue (customer_code, name, contact, status) VALUES (?, ?, ?, 'ลงทะเบียนแล้ว')");
+        if ($stmt->execute([$code, $name, $contact])) {
+            echo json_encode(['success' => true, 'id' => $code]);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Insert Failed']);
+        }
+    } catch (PDOException $e) {
+        http_response_code(400); // Bad Request
+        echo json_encode(['success' => false, 'error' => 'Database Error: ' . $e->getMessage()]);
     }
     exit;
 }

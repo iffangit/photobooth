@@ -49,7 +49,7 @@
             flex-direction: column;
             align-items: center;
             gap: 2rem;
-            padding: 2rem;
+            /* padding: 2rem; */
         }
     </style>
 </head>
@@ -143,9 +143,9 @@
                                 </select>
                             </div>
                             
-                            <div class="relative rounded-lg overflow-hidden bg-black aspect-video">
+                            <div class="relative rounded-lg overflow-hidden bg-black aspect-[4/3] shadow-lg">
                                 <video ref="video" class="camera-feed w-full h-full object-cover" 
-                                       autoplay playsinline muted width="1280" height="720"></video>
+                                       autoplay playsinline muted></video>
                                 <div v-if="countdown > 0" 
                                      class="absolute inset-0 flex items-center justify-center text-white text-[150px] font-bold tracking-tighter">
                                     {{ countdown }}

@@ -50,16 +50,16 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-    <div id="app" class="flex h-screen">
+<body class="bg-zinc-50 text-zinc-900 overflow-hidden">
+    <div id="app" class="flex h-screen bg-zinc-50">
         <!-- Sidebar -->
-        <div class="w-80 bg-gradient-to-b from-indigo-600 to-purple-700 text-white shadow-2xl flex flex-col">
-            <div class="p-6 border-b border-white/20">
-                <h1 class="text-2xl font-bold flex items-center gap-2">
-                    <i class="bi bi-camera-fill text-yellow-300"></i>
-                    คิวถ่ายรูป
+        <div class="w-80 bg-black text-white shadow-2xl flex flex-col z-10">
+            <div class="p-6 border-b border-white/10">
+                <h1 class="text-2xl font-bold flex items-center gap-2 tracking-tight">
+                    <i class="bi bi-camera-fill"></i>
+                    PHOTODASH
                 </h1>
-                <button @click="fetchQueue" class="mt-3 w-full bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg transition flex items-center justify-center gap-2">
+                <button @click="fetchQueue" class="mt-4 w-full bg-white text-black font-semibold hover:bg-zinc-200 px-4 py-2 rounded-lg transition flex items-center justify-center gap-2">
                     <i class="bi bi-arrow-clockwise"></i>
                     รีเฟรชคิว
                 </button>
@@ -68,56 +68,56 @@
             <div class="flex-1 overflow-auto p-4 space-y-2">
                 <div v-for="c in queue" :key="c.id" 
                      @click="selectCustomer(c)"
-                     class="p-4 rounded-xl cursor-pointer transition-all duration-200 hover:scale-105"
-                     :class="selectedCustomer?.customer_code === c.customer_code ? 'bg-white text-indigo-700 shadow-lg' : 'bg-white/10 hover:bg-white/20'">
-                    <div class="flex justify-between items-center">
+                     class="p-4 rounded-xl cursor-pointer transition-all duration-200 border"
+                     :class="selectedCustomer?.customer_code === c.customer_code ? 'bg-white text-black border-transparent shadow-lg transform scale-102' : 'bg-transparent border-zinc-800 hover:bg-zinc-900 hover:border-zinc-700 text-zinc-400 hover:text-white'">
+                    <div class="flex justify-between items-center mb-1">
                         <strong class="font-semibold">{{ c.name }}</strong>
-                        <span class="px-3 py-1 rounded-full text-xs font-medium"
+                        <span class="px-2 py-0.5 rounded text-[10px] uppercase tracking-wider font-bold"
                               :class="{
-                                  'bg-yellow-400 text-black': c.status.startsWith('Registered'),
-                                  'bg-blue-400 text-white': c.status.startsWith('Shooting'),
-                                  'bg-green-400 text-white': c.status.startsWith('Ready')
+                                  'bg-zinc-800 text-zinc-300 border border-zinc-700': c.status.startsWith('Registered'),
+                                  'bg-white text-black': c.status.startsWith('Shooting'),
+                                  'bg-zinc-400 text-black': c.status.startsWith('Ready')
                               }">
                             {{ c.status }}
                         </span>
                     </div>
-                    <small class="opacity-70 text-xs">{{ c.customer_code }}</small>
+                    <small class="text-xs font-mono opacity-60">{{ c.customer_code }}</small>
                 </div>
             </div>
         </div>
 
         <!-- Main Area -->
-        <div class="flex-1 overflow-auto p-8">
+        <div class="flex-1 overflow-auto p-8 bg-zinc-50">
             <div v-if="!selectedCustomer" class="flex items-center justify-center h-full">
-                <div class="text-center">
-                    <i class="bi bi-person-plus text-6xl text-indigo-300 mb-4"></i>
-                    <h3 class="text-2xl font-light text-gray-600">เลือกลูกค้าเพื่อเริ่มถ่ายรูป</h3>
+                <div class="text-center opacity-40">
+                    <i class="bi bi-person-plus text-6xl mb-4 text-black"></i>
+                    <h3 class="text-2xl font-light">เลือกลูกค้าเพื่อเริ่มถ่ายรูป</h3>
                 </div>
             </div>
 
             <div v-else>
                 <!-- Header -->
-                <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+                <div class="bg-white rounded-xl border border-zinc-200 p-6 mb-6">
                     <div class="flex justify-between items-center">
-                        <h2 class="text-3xl font-bold text-gray-800 flex items-center gap-3">
-                            <i class="bi bi-person-circle text-indigo-600"></i>
+                        <h2 class="text-3xl font-bold text-black flex items-center gap-3">
+                            <i class="bi bi-person-circle"></i>
                             {{ selectedCustomer.name }}
                         </h2>
                         <div class="flex items-center gap-4">
-                            <div class="flex items-center gap-3 bg-gradient-to-r from-indigo-50 to-purple-50 px-6 py-3 rounded-xl">
+                            <div class="flex items-center gap-3 bg-zinc-50 border border-zinc-100 px-6 py-3 rounded-xl">
                                 <button @click="decreaseQty" 
-                                        class="w-10 h-10 bg-gradient-to-br from-red-500 to-pink-600 text-white rounded-lg hover:scale-110 transition flex items-center justify-center shadow-md">
+                                        class="w-10 h-10 bg-white border border-zinc-300 text-black rounded-lg hover:border-black transition flex items-center justify-center">
                                     <i class="bi bi-dash text-xl"></i>
                                 </button>
-                                <span class="text-2xl font-bold text-gray-800 min-w-[50px] text-center">{{ selectedCustomer.quantity }}</span>
+                                <span class="text-2xl font-bold text-black min-w-[50px] text-center">{{ selectedCustomer.quantity }}</span>
                                 <button @click="increaseQty" 
-                                        class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-lg hover:scale-110 transition flex items-center justify-center shadow-md">
+                                        class="w-10 h-10 bg-black text-white rounded-lg hover:bg-zinc-800 transition flex items-center justify-center shadow-lg shadow-zinc-200">
                                     <i class="bi bi-plus text-xl"></i>
                                 </button>
-                                <span class="text-gray-600 font-medium">แท่ง</span>
+                                <span class="text-zinc-500 font-medium">แท่ง</span>
                             </div>
                             <button @click="resetSession" 
-                                    class="bg-gradient-to-r from-red-500 to-pink-600 text-white px-6 py-3 rounded-xl hover:shadow-xl transition flex items-center gap-2">
+                                    class="border border-red-200 text-red-500 hover:bg-red-50 px-6 py-3 rounded-xl transition flex items-center gap-2">
                                 <i class="bi bi-x-circle"></i>
                                 จบเซสชัน
                             </button>
@@ -128,23 +128,23 @@
                 <!-- STAGE 1: CAPTURE -->
                 <div v-show="currentStage === 'Capture'" class="grid grid-cols-3 gap-6">
                     <div class="col-span-2 space-y-4">
-                        <div class="bg-white rounded-2xl shadow-lg p-4">
+                        <div class="bg-white rounded-xl border border-zinc-200 p-4">
                             <div class="mb-3 flex items-center gap-2">
-                                <i class="bi bi-camera-video text-indigo-600"></i>
-                                <label class="text-sm text-gray-600 font-medium">เลือกกล้อง:</label>
+                                <i class="bi bi-camera-video text-black"></i>
+                                <label class="text-sm text-zinc-600 font-medium">เลือกกล้อง:</label>
                                 <select v-model="selectedCameraId" @change="startCamera"
-                                        class="px-4 py-2 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+                                        class="px-4 py-2 rounded-lg border border-zinc-200 focus:border-black focus:ring-0 outline-none bg-zinc-50">
                                     <option v-for="cam in cameras" :value="cam.deviceId">
                                         {{ cam.label || 'Camera ' + cam.deviceId }}
                                     </option>
                                 </select>
                             </div>
                             
-                            <div class="relative rounded-xl overflow-hidden bg-black shadow-2xl">
-                                <video ref="video" class="camera-feed w-full h-[500px] object-cover" 
+                            <div class="relative rounded-lg overflow-hidden bg-black aspect-video">
+                                <video ref="video" class="camera-feed w-full h-full object-cover" 
                                        autoplay playsinline muted width="1280" height="720"></video>
                                 <div v-if="countdown > 0" 
-                                     class="absolute inset-0 flex items-center justify-center text-white text-9xl font-bold animate-pulse">
+                                     class="absolute inset-0 flex items-center justify-center text-white text-[150px] font-bold tracking-tighter">
                                     {{ countdown }}
                                 </div>
                             </div>
@@ -152,7 +152,7 @@
                             <div class="text-center mt-6">
                                 <button @click="startCountdown" 
                                         :disabled="isShooting || shots.length >= 3"
-                                        class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-12 py-4 rounded-full text-lg font-semibold hover:shadow-2xl hover:scale-105 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3 mx-auto">
+                                        class="bg-black text-white px-12 py-4 rounded-full text-lg font-semibold hover:bg-zinc-800 hover:scale-105 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3 mx-auto shadow-xl shadow-zinc-200">
                                     <i class="bi bi-camera text-2xl"></i>
                                     {{ isShooting ? 'กำลังถ่าย...' : 'ถ่ายรูป (' + (shots.length+1) + '/3)' }}
                                 </button>
@@ -161,25 +161,25 @@
                     </div>
 
                     <div class="space-y-4">
-                        <div class="bg-white rounded-2xl shadow-lg p-6">
-                            <h5 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                                <i class="bi bi-images text-indigo-600"></i>
+                        <div class="bg-white rounded-xl border border-zinc-200 p-6 h-full">
+                            <h5 class="text-lg font-bold text-black mb-4 flex items-center gap-2">
+                                <i class="bi bi-images"></i>
                                 รูปที่ถ่าย
                             </h5>
                             <div class="space-y-3">
                                 <div v-for="(img, idx) in shots" :key="idx" 
-                                     class="border-2 border-indigo-100 rounded-xl p-1 bg-gradient-to-br from-indigo-50 to-purple-50">
-                                    <img :src="img" class="w-full rounded-lg shadow">
+                                     class="border border-zinc-200 rounded-lg p-1 bg-zinc-50">
+                                    <img :src="img" class="w-full rounded shadow-sm">
                                 </div>
                                 
-                                <div v-if="shots.length === 3" class="space-y-2 pt-4">
+                                <div v-if="shots.length === 3" class="space-y-3 pt-4">
                                     <button @click="processStrip" 
-                                            class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-xl hover:shadow-xl transition flex items-center justify-center gap-2 font-semibold">
+                                            class="w-full bg-black text-white py-3 rounded-xl hover:bg-zinc-800 transition flex items-center justify-center gap-2 font-semibold shadow-lg shadow-zinc-200">
                                         <i class="bi bi-check-circle"></i>
                                         ดำเนินการพิมพ์
                                     </button>
                                     <button @click="retakeAll" 
-                                            class="w-full bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200 transition flex items-center justify-center gap-2">
+                                            class="w-full bg-white border border-zinc-200 text-zinc-700 py-3 rounded-xl hover:bg-zinc-50 transition flex items-center justify-center gap-2">
                                         <i class="bi bi-arrow-counterclockwise"></i>
                                         ถ่ายใหม่ทั้งหมด
                                     </button>
@@ -192,80 +192,84 @@
                 <!-- STAGE 2: PREVIEW & PRINT -->
                 <div v-show="currentStage === 'Print'" class="grid grid-cols-3 gap-6">
                     <div class="space-y-4">
-                        <div class="bg-white rounded-2xl shadow-lg p-6">
-                            <h5 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                                <i class="bi bi-palette text-indigo-600"></i>
+                        <div class="bg-white rounded-xl border border-zinc-200 p-6">
+                            <h5 class="text-xl font-bold text-black mb-4 flex items-center gap-2">
+                                <i class="bi bi-palette"></i>
                                 การตกแต่ง
                             </h5>
                             
                             <div class="space-y-4">
                                 <div>
-                                    <label class="text-sm font-medium text-gray-700 mb-2 block">พื้นหลัง</label>
+                                    <label class="text-sm font-medium text-zinc-500 mb-2 block">พื้นหลัง</label>
                                     <select v-model="backgroundType" @change="regenerateStrip"
-                                            class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+                                            class="w-full px-4 py-2 rounded-lg border border-zinc-200 focus:border-black focus:ring-0 outline-none bg-zinc-50">
                                         <option value="color">สีพื้น</option>
                                         <option value="image">รูปภาพ</option>
                                     </select>
                                 </div>
                                 
                                 <div v-if="backgroundType === 'color'">
-                                    <label class="text-sm font-medium text-gray-700 mb-2 block">เลือกสี</label>
+                                    <label class="text-sm font-medium text-zinc-500 mb-2 block">เลือกสี</label>
                                     <input type="color" v-model="backgroundColor" @change="regenerateStrip"
-                                           class="w-full h-12 rounded-lg cursor-pointer">
+                                           class="w-full h-10 rounded cursor-pointer border-0 p-0">
                                 </div>
                                 
                                 <div v-if="backgroundType === 'image'">
-                                    <label class="text-sm font-medium text-gray-700 mb-2 block">อัปโหลดรูปพื้นหลัง</label>
+                                    <label class="text-sm font-medium text-zinc-500 mb-2 block">อัปโหลดรูปพื้นหลัง</label>
                                     <input type="file" accept="image/*" @change="handleBackgroundUpload"
-                                           class="w-full px-4 py-2 border border-gray-200 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                                           class="w-full px-4 py-2 border border-zinc-200 rounded-lg file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:bg-black file:text-white file:text-xs hover:file:bg-zinc-800">
                                 </div>
                                 
                                 <div>
-                                    <label class="text-sm font-medium text-gray-700 mb-2 block">ข้อความวันที่</label>
+                                    <label class="text-sm font-medium text-zinc-500 mb-2 block">ข้อความวันที่</label>
                                     <input type="text" v-model="dateText" @input="regenerateStrip"
-                                           class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none">
+                                           class="w-full px-4 py-2 rounded-lg border border-zinc-200 focus:border-black focus:ring-0 outline-none bg-zinc-50">
                                 </div>
                                 
                                 <button @click="regenerateStrip" 
-                                        class="w-full bg-indigo-100 text-indigo-700 py-3 rounded-xl hover:bg-indigo-200 transition flex items-center justify-center gap-2 font-semibold">
+                                        class="w-full bg-zinc-100 text-zinc-800 py-3 rounded-xl hover:bg-zinc-200 transition flex items-center justify-center gap-2 font-medium">
                                     <i class="bi bi-arrow-clockwise"></i>
                                     รีเฟรชตัวอย่าง
                                 </button>
                                 
-                                <hr class="border-gray-200">
+                                <hr class="border-zinc-100">
                                 
                                 <button @click="printA4" 
-                                        class="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-4 rounded-xl hover:shadow-2xl transition flex items-center justify-center gap-2 font-bold text-lg">
+                                        class="w-full bg-black text-white py-4 rounded-xl hover:bg-zinc-800 transition flex items-center justify-center gap-2 font-bold text-lg shadow-xl shadow-zinc-200">
                                     <i class="bi bi-printer text-xl"></i>
                                     พิมพ์
                                 </button>
                                 
                                 <button @click="currentStage = 'Capture'" 
-                                        class="w-full bg-gray-100 text-gray-700 py-3 rounded-xl hover:bg-gray-200 transition flex items-center justify-center gap-2">
+                                        class="w-full text-zinc-400 hover:text-black py-2 text-sm transition flex items-center justify-center gap-2">
                                     <i class="bi bi-arrow-left"></i>
-                                    ถ่ายใหม่
+                                    ย้อนกลับไปถ่ายใหม่
                                 </button>
                             </div>
                         </div>
                         
-                        <div class="bg-white rounded-2xl shadow-lg p-6">
-                            <h6 class="text-sm font-semibold text-gray-600 mb-3 flex items-center gap-2">
+                        <div class="bg-white rounded-xl border border-zinc-200 p-6">
+                            <h6 class="text-sm font-semibold text-zinc-400 mb-3 flex items-center gap-2 uppercase tracking-wider">
                                 <i class="bi bi-eye"></i>
-                                ตัวอย่างขนาดเล็ก
+                                Preview
                             </h6>
-                            <img :src="finalStripUrl" class="w-full shadow-lg rounded-lg">
+                            <img :src="finalStripUrl" class="w-full shadow-lg rounded-lg border border-zinc-100">
                         </div>
                     </div>
 
                     <div class="col-span-2">
-                        <div class="bg-white rounded-2xl shadow-lg p-6">
-                            <h5 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                                <i class="bi bi-file-earmark-text text-indigo-600"></i>
-                                ตัวอย่าง A4
-                            </h5>
-                            <div class="bg-gray-100 p-4 rounded-xl">
+                        <div class="bg-white rounded-xl border border-zinc-200 p-6 h-full flex flex-col">
+                            <div class="flex justify-between items-center mb-6">
+                                <h5 class="text-xl font-bold text-black flex items-center gap-2">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                    ตัวอย่าง A4
+                                </h5>
+                                <span class="bg-zinc-100 text-zinc-500 text-xs px-2 py-1 rounded">Print Layout</span>
+                            </div>
+                            
+                            <div class="bg-zinc-100 rounded-xl flex-1 flex items-start justify-center overflow-hidden border border-zinc-200 border-dashed">
                                 <div id="print-wrapper">
-                                    <div class="print-layout" 
+                                    <div class="print-layout shadow-2xl" 
                                          v-for="p in Math.ceil((parseInt(selectedCustomer.quantity) || 1) / 6)" 
                                          :key="p">
                                         <div class="print-item" v-for="n in getPageCount(p)" :key="n">

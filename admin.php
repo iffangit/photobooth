@@ -46,7 +46,10 @@
         #print-wrapper {
             width: 100%;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            padding: 2rem;
         }
     </style>
 </head>
@@ -267,7 +270,7 @@
                                 <span class="bg-zinc-100 text-zinc-500 text-xs px-2 py-1 rounded">Print Layout</span>
                             </div>
                             
-                            <div class="bg-zinc-100 rounded-xl flex-1 flex items-start justify-center overflow-hidden border border-zinc-200 border-dashed">
+                            <div class="bg-zinc-100 rounded-xl flex-1 flex items-start justify-center overflow-y-auto border border-zinc-200 border-dashed">
                                 <div id="print-wrapper">
                                     <div class="print-layout shadow-2xl" 
                                          v-for="p in Math.ceil((parseInt(selectedCustomer.quantity) || 1) / 6)" 

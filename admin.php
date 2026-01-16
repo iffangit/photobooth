@@ -17,6 +17,26 @@
         .fade-enter-active, .fade-leave-active { transition: opacity 0.3s; }
         .fade-enter, .fade-leave-to { opacity: 0; }
 
+        /* Skeleton Loader */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.05) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Photo Capture Flash */
+        @keyframes flash {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+        .camera-flash {
+            animation: flash 0.3s ease-out;
+        }
+
         /* A4 Preview Styles */
         .print-layout { 
             max-width: 100%;
@@ -94,7 +114,24 @@
             </div>
 
             <div class="flex-1 overflow-auto p-4 space-y-3">
-                <div v-for="c in queue" :key="c.id" 
+                <!-- Skeleton Loader -->
+                <div v-if="isLoadingQueue" class="space-y-3">
+                    <div v-for="n in 3" :key="'skeleton-'+n" class="p-4 rounded-xl border border-white/5 bg-white/5">
+                        <div class="flex justify-between items-center mb-2">
+                            <div class="skeleton h-5 w-24 rounded"></div>
+                            <div class="skeleton h-5 w-16 rounded"></div>
+                        </div>
+                        <div class="skeleton h-3 w-32 rounded"></div>
+                    </div>
+                </div>
+                
+                <!-- Actual Queue -->
+                <div v-else-if="queue.length === 0" class="text-center py-12 text-zinc-600">
+                    <i class="bi bi-inbox text-4xl mb-2 block"></i>
+                    <p class="text-sm">ยังไม่มีลูกค้าในคิว</p>
+                </div>
+                
+                <div v-else v-for="c in queue" :key="c.id" 
                      @click="selectCustomer(c); showSidebar = false"
                      class="group p-4 rounded-xl cursor-pointer transition-all duration-300 border relative overflow-hidden"
                      :class="(selectedCustomer && selectedCustomer.customer_code === c.customer_code) ? 'bg-indigo-600/20 border-indigo-500/50 shadow-[0_0_20px_rgba(99,102,241,0.3)]' : 'bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/20'">
@@ -393,6 +430,26 @@
             </div>
         </div>
         </transition>
+
+        <!-- Toast Notifications -->
+        <div class="fixed top-4 right-4 z-50 space-y-2">
+            <transition-group name="fade">
+            <div v-for="toast in toasts" :key="toast.id"
+                 class="bg-zinc-900/95 backdrop-blur-xl border rounded-2xl shadow-2xl px-6 py-4 min-w-[300px] flex items-center gap-3"
+                 :class="{
+                     'border-blue-500/50': toast.type === 'info',
+                     'border-green-500/50': toast.type === 'success',
+                     'border-red-500/50': toast.type === 'error'
+                 }">
+                <i class="text-2xl" :class="{
+                    'bi bi-info-circle text-blue-400': toast.type === 'info',
+                    'bi bi-check-circle text-green-400': toast.type === 'success',
+                    'bi bi-x-circle text-red-400': toast.type === 'error'
+                }"></i>
+                <span class="text-white font-medium">{{ toast.message }}</span>
+            </div>
+            </transition-group>
+        </div>
     </div>
 
     <script>
@@ -406,7 +463,9 @@
                 shots: [],
                 countdown: 0,
                 isShooting: false,
+                isLoadingQueue: true,
                 showDeliverModal: false,
+                toasts: [],
                 dateText: new Date().toLocaleDateString('en-GB'),
                 backgroundType: 'color', 
                 backgroundColor: '#ffeaa7',
@@ -430,9 +489,14 @@
                 fetchQueue() {
                     axios.get('api.php?action=get_queue')
                         .then(res => { 
-                            this.queue = res.data.sort((a, b) => b.id - a.id); 
+                            this.queue = res.data.sort((a, b) => b.id - a.id);
+                            this.isLoadingQueue = false;
                         })
-                        .catch(err => console.error(err));
+                        .catch(err => {
+                            console.error(err);
+                            this.isLoadingQueue = false;
+                            this.showToast('ไม่สามารถโหลดคิวได้', 'error');
+                        });
                 },
                 async initCamera() {
                     try {
@@ -662,7 +726,14 @@
                         Swal.fire({ icon: 'error', title: 'Print Error', text: e.message, background: '#1a1a1a', color: '#fff' });
                     }
                 },
-                resetSession() { this.selectedCustomer = null; this.shots = []; }
+                resetSession() { this.selectedCustomer = null; this.shots = []; },
+                showToast(message, type = 'info') {
+                    const id = Date.now();
+                    this.toasts.push({ id, message, type });
+                    setTimeout(() => {
+                        this.toasts = this.toasts.filter(t => t.id !== id);
+                    }, 3000);
+                }
             }
         });
     </script>

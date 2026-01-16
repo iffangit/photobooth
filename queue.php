@@ -13,43 +13,47 @@
         body { font-family: 'Prompt', 'Inter', sans-serif; }
     </style>
 </head>
-<body class="bg-[#0f0f11] text-zinc-100 min-h-screen overflow-hidden bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-center">
+<body class="bg-[#0f0f11] text-zinc-100 bg-[url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')] bg-cover bg-center">
     <!-- Dark overlay -->
     <div class="fixed inset-0 bg-black/75 backdrop-blur-sm z-0"></div>
 
-    <div id="app" class="relative z-10 flex flex-col h-screen p-4 lg:p-6 gap-4">
+    <div id="app" class="min-h-screen flex flex-col bg-gradient-to-br from-zinc-950 via-black to-zinc-900 text-white relative">
+        <!-- Background Gradient Orbs -->
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[100px] pointer-events-none"></div>
         
         <!-- Header -->
-        <header class="flex justify-between items-center bg-black/40 backdrop-blur-xl p-4 rounded-2xl border border-white/10 shadow-xl flex-shrink-0">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center text-xl text-white shadow-lg shadow-indigo-500/30">
-                    <i class="bi bi-camera-fill"></i>
+        <div class="bg-black/60 backdrop-blur-xl border-b border-white/5 p-4 md:p-6 shadow-2xl z-10">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-center md:text-left">
+                    <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent flex items-center gap-3 justify-center md:justify-start">
+                        <i class="bi bi-camera-fill text-indigo-400"></i>
+                        MSJ-BOOTH
+                    </h1>
+                    <p class="text-xs md:text-sm text-zinc-600 mt-1">สถานะคิวถ่ายภาพ - Real-time Updates</p>
                 </div>
-                <div>
-                    <h1 class="text-2xl font-bold text-white tracking-tight mb-0.5">MSJ-BOOTH</h1>
-                    <p class="text-zinc-400 text-xs font-light tracking-wide flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                        LIVE BOARD
-                    </p>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2 bg-white/5 px-4 md:px-6 py-2 md:py-3 rounded-full border border-white/10">
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <span class="text-xs md:text-sm font-semibold text-zinc-400">LIVE</span>
+                    </div>
                 </div>
             </div>
-            <div class="text-right">
-                <div class="text-3xl font-mono font-bold text-white tracking-widest">{{ timeText }}</div>
-            </div>
-        </header>
+        </div>
 
-        <!-- Main Layout: 4 Columns -->
-        <div class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 overflow-hidden min-h-0">
-            
-            <!-- COL 1: QUEUE (WAITING) - 3 COLS -->
-            <div class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border border-white/10 flex flex-col overflow-hidden shadow-xl">
-                <div class="p-3 border-b border-white/10 bg-black/20 flex justify-between items-center">
+        <!-- Main Content - Responsive Grid -->
+        <div class="flex-1 p-4 md:p-8 overflow-y-auto">
+            <div class="h-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 md:gap-6">
+
+            <!-- COL 1: WAITING (REGISTERED) -->
+            <div class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border border-white/10 flex flex-col overflow-hidden shadow-xl max-h-[calc(100vh-180px)] min-h-[400px]">
+                <div class="p-3 border-b border-white/10 bg-black/20 flex justify-between items-center flex-shrink-0">
                     <h2 class="text-base font-bold text-zinc-300 flex items-center gap-2 uppercase tracking-tight">
                         <i class="bi bi-people-fill"></i> รอถ่าย
                     </h2>
                     <span class="bg-white/10 text-white text-[10px] font-bold px-2 py-0.5 rounded">{{ waitingQueue.length }}</span>
                 </div>
-                <div class="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar">
+                <div class="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar min-h-0">
                     <div v-for="(c, index) in waitingQueue" :key="c.id" 
                          class="bg-white/5 border border-white/5 p-3 rounded-xl flex items-center gap-3">
                         <div class="w-8 h-8 rounded-lg bg-zinc-800 text-zinc-400 flex items-center justify-center text-xs font-bold font-mono">
@@ -63,9 +67,9 @@
                 </div>
             </div>
 
-            <!-- COL 2: SHOOTING (ACTIVE) - 3 COLS -->
-            <div class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border-2 border-indigo-500/30 flex flex-col overflow-hidden shadow-[0_0_30px_rgba(99,102,241,0.1)] relative">
-                <div class="p-3 border-b border-indigo-500/20 bg-indigo-900/10 text-center">
+            <!-- COL 2: SHOOTING (ACTIVE) -->
+            <div class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border-2 border-indigo-500/30 flex flex-col overflow-hidden shadow-[0_0_30px_rgba(99,102,241,0.1)] relative max-h-[calc(100vh-180px)] min-h-[400px]">
+                <div class="p-3 border-b border-indigo-500/20 bg-indigo-900/10 text-center flex-shrink-0">
                     <h2 class="text-lg font-bold text-indigo-300 flex items-center justify-center gap-2 uppercase tracking-wider">
                         <i class="bi bi-camera-reels"></i> กำลังถ่าย
                     </h2>
@@ -101,9 +105,9 @@
                 </div>
             </div>
 
-            <!-- COL 3: PROCESSING (PRINT/DELIVER) - 3 COLS -->
-            <div class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border border-yellow-500/20 flex flex-col overflow-hidden shadow-xl">
-                <div class="p-3 border-b border-yellow-500/10 bg-yellow-900/10 text-center">
+            <!-- COL 3: PROCESSING (PRINT/DELIVER) -->
+            <div class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border border-yellow-500/20 flex flex-col overflow-hidden shadow-xl max-h-[calc(100vh-180px)] min-h-[400px]">
+                <div class="p-3 border-b border-yellow-500/10 bg-yellow-900/10 text-center flex-shrink-0">
                     <h2 class="text-lg font-bold text-yellow-500 flex items-center justify-center gap-2 uppercase tracking-wider">
                         <i class="bi bi-printer"></i> รอรับรูป
                     </h2>
@@ -137,14 +141,14 @@
                 </div>
             </div>
 
-            <!-- COL 4: DONE (FINISHED) - 3 COLS -->
-            <div class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border border-green-500/20 flex flex-col overflow-hidden shadow-xl">
-                <div class="p-3 border-b border-green-500/10 bg-green-900/10 flex justify-between items-center">
+            <!-- COL 4: DONE (RECENT) -->
+            <div class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border border-green-500/20 flex flex-col overflow-hidden shadow-xl max-h-[calc(100vh-180px)] min-h-[400px]">
+                <div class="p-3 border-b border-green-500/10 bg-green-900/10 flex justify-between items-center flex-shrink-0">
                     <h2 class="text-base font-bold text-green-300 flex items-center gap-2 uppercase tracking-tight">
                         <i class="bi bi-check-circle-fill"></i> เสร็จสิ้น
                     </h2>
                 </div>
-                <div class="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar">
+                <div class="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar min-h-0">
                     <div v-for="c in doneQueue" :key="c.id" 
                          class="bg-green-900/5 border border-green-500/10 p-3 rounded-xl flex items-center gap-3 opacity-75 hover:opacity-100 transition">
                         <div class="w-8 h-8 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center text-sm border border-green-500/20">

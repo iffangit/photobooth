@@ -94,21 +94,21 @@
         <!-- Sidebar -->
         <div :class="showSidebar ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'" 
              class="fixed lg:static inset-y-0 left-0 w-80 bg-black/80 backdrop-blur-xl border-r border-white/10 flex flex-col z-40 transition-transform duration-300 ease-in-out">
-            <div class="p-6 border-b border-white/10 flex justify-between items-center">
+            <div class="p-4 border-b border-white/10 flex justify-between items-center">
                 <div>
-                    <h1 class="text-2xl font-bold flex items-center gap-2 tracking-tight">
-                        <i class="bi bi-camera-fill text-indigo-400"></i>
+                    <h1 class="text-xl font-bold flex items-center gap-2 tracking-tight">
+                        <i class="bi bi-camera-fill text-indigo-400 text-lg"></i>
                         MSJ-BOOTH
                     </h1>
                 </div>
                 <button @click="showSidebar = false" class="lg:hidden text-zinc-400 hover:text-white">
-                    <i class="bi bi-x-lg text-xl"></i>
+                    <i class="bi bi-x-lg text-lg"></i>
                 </button>
             </div>
             
-            <div class="p-4">
-                <button @click="fetchQueue" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium px-4 py-3 rounded-xl transition flex items-center justify-center gap-2">
-                    <i class="bi bi-arrow-clockwise"></i>
+            <div class="p-3">
+                <button @click="fetchQueue" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium px-3 py-2 rounded-lg transition flex items-center justify-center gap-2 text-sm">
+                    <i class="bi bi-arrow-clockwise text-xs"></i>
                     รีเฟรชคิว
                 </button>
             </div>
@@ -133,15 +133,15 @@
                 
                 <div v-else v-for="c in queue" :key="c.id" 
                      @click="selectCustomer(c); showSidebar = false"
-                     class="group p-4 rounded-xl cursor-pointer transition-all duration-300 border relative overflow-hidden"
+                     class="group p-3 rounded-lg cursor-pointer transition-all duration-300 border relative overflow-hidden"
                      :class="(selectedCustomer && selectedCustomer.customer_code === c.customer_code) ? 'bg-indigo-600/20 border-indigo-500/50 shadow-[0_0_20px_rgba(99,102,241,0.3)]' : 'bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/20'">
                     
                     <div v-if="selectedCustomer && selectedCustomer.customer_code === c.customer_code" class="absolute inset-0 bg-indigo-500/10 blur-xl"></div>
                     
                     <div class="relative z-10">
-                        <div class="flex justify-between items-center mb-2">
-                            <strong class="font-semibold text-white tracking-wide">{{ c.name }}</strong>
-                            <span class="px-2 py-0.5 rounded text-[10px] uppercase font-bold"
+                        <div class="flex justify-between items-center mb-1.5">
+                            <strong class="font-semibold text-white tracking-wide text-sm">{{ c.name }}</strong>
+                            <span class="px-1.5 py-0.5 rounded text-[9px] uppercase font-bold"
                                   :class="{
                                       'bg-zinc-800 text-zinc-400 border border-zinc-700': c.status === 'ลงทะเบียนแล้ว' || c.status === 'Registered',
                                       'bg-blue-600/80 text-white border border-blue-400/30': c.status === 'กำลังถ่าย' || c.status === 'Shooting',
@@ -168,9 +168,9 @@
         </div>
 
         <!-- Main Area -->
-        <div class="flex-1 overflow-auto p-4 lg:p-8 relative">
+        <div class="flex-1 overflow-auto p-3 lg:p-6 relative">
             <div v-if="!selectedCustomer" class="flex items-center justify-center h-full">
-                <div class="text-center opacity-30 bg-black/20 p-12 rounded-3xl backdrop-blur-sm border border-white/5">
+                <div class="text-center opacity-30 bg-black/20 p-8 rounded-3xl backdrop-blur-sm border border-white/5">
                     <i class="bi bi-person-plus text-8xl mb-6 text-white block"></i>
                     <h3 class="text-3xl font-light text-white tracking-wider">เลือกลูกค้าเพื่อเริ่มถ่ายรูป</h3>
                     <button @click="showSidebar = true" class="lg:hidden mt-8 px-6 py-3 bg-indigo-600 text-white rounded-xl shadow-lg">
@@ -179,48 +179,50 @@
                 </div>
             </div>
 
-            <div v-else class="max-w-7xl mx-auto pt-12 lg:pt-0">
+            <div v-else class="max-w-7xl mx-auto pt-8 lg:pt-0">
                 <!-- Mobile Toggle -->
-                <button @click="showSidebar = true" class="lg:hidden absolute top-4 left-4 z-20 p-2 text-white bg-black/40 backdrop-blur rounded-lg border border-white/10">
-                    <i class="bi bi-list text-2xl"></i>
+                <button @click="showSidebar = true" class="lg:hidden absolute top-3 left-3 z-20 p-1.5 text-white bg-black/40 backdrop-blur rounded-lg border border-white/10">
+                    <i class="bi bi-list text-xl"></i>
                 </button>
 
                 <!-- Header -->
-                <div class="bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 p-6 mb-8 rounded-3xl shadow-2xl overflow-hidden relative">
-                    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-6">
-                        <div class="flex items-center gap-4">
-                            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-3xl shadow-lg shadow-indigo-500/30">
+                <div class="bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 p-4 mb-6 rounded-2xl shadow-2xl overflow-hidden relative">
+                    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-indigo-500/30">
                                 <i class="bi bi-person-fill"></i>
                             </div>
                             <div>
-                                <h2 class="text-3xl font-bold text-white mb-1">{{ selectedCustomer.name }}</h2>
-                                <p class="text-zinc-500 font-mono text-sm">{{ selectedCustomer.customer_code }}</p>
+                                <h2 class="text-2xl font-bold text-white mb-0.5">{{ selectedCustomer.name }}</h2>
+                                <p class="text-zinc-500 font-mono text-xs">{{ selectedCustomer.customer_code }}</p>
                             </div>
                         </div>
 
-                        <div class="flex flex-wrap items-center gap-4">
-                            <div class="flex items-center gap-3 bg-black/40 border border-white/10 px-4 py-2 rounded-2xl backdrop-blur-md">
+                        <div class="flex flex-wrap items-center gap-3">
+                            <div class="flex items-center gap-2 bg-black/40 border border-white/10 px-3 rounded-xl backdrop-blur-md h-[40px]">
                                 <button @click="decreaseQty" 
-                                        class="w-10 h-10 bg-white/5 text-white rounded-xl hover:bg-white/20 transition flex items-center justify-center border border-white/10">
-                                    <i class="bi bi-dash text-xl"></i>
+                                        class="w-7 h-7 bg-white/5 text-white rounded-lg hover:bg-white/20 transition flex items-center justify-center border border-white/10 flex-shrink-0">
+                                    <i class="bi bi-dash text-lg"></i>
                                 </button>
-                                <span class="text-2xl font-bold text-white min-w-[40px] text-center">{{ selectedCustomer.quantity }}</span>
+                                <div class="flex items-center justify-center min-w-[30px]">
+                                    <span class="text-xl font-bold text-white">{{ selectedCustomer.quantity }}</span>
+                                </div>
                                 <button @click="increaseQty" 
-                                        class="w-10 h-10 bg-indigo-600 text-white rounded-xl hover:bg-indigo-500 transition flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                                    <i class="bi bi-plus text-xl"></i>
+                                        class="w-7 h-7 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 transition flex items-center justify-center border border-indigo-600 flex-shrink-0">
+                                    <i class="bi bi-plus text-lg"></i>
                                 </button>
-                                <span class="text-zinc-500 font-medium text-sm pr-2">แท่ง</span>
+                                <span class="text-zinc-500 font-medium text-xs pl-1">แท่ง</span>
                             </div>
                             
                             <button v-if="selectedCustomer.status === 'รอส่งมอบ'" 
                                     @click="markDelivered" 
-                                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-2xl transition flex items-center gap-2 font-semibold shadow-lg">
+                                    class="bg-green-600 hover:bg-green-700 text-white px-4 h-[38px] rounded-xl transition flex items-center gap-2 font-semibold shadow-lg text-sm">
                                 <i class="bi bi-check-lg"></i>
                                 ส่งมอบแล้ว
                             </button>
                             
                             <button @click="resetSession" 
-                                    class="bg-white/5 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-white/10 px-6 py-3 rounded-2xl transition flex items-center gap-2">
+                                    class="bg-white/5 hover:bg-red-500/20 text-red-400 hover:text-red-300 border border-white/10 px-4 h-[38px] rounded-xl transition flex items-center gap-2 text-sm">
                                 <i class="bi bi-x-circle"></i>
                                 ปิดหน้าต่าง
                             </button>
@@ -230,10 +232,10 @@
 
                 <!-- STAGE 1: CAPTURE -->
                 <transition name="fade" mode="out-in">
-                <div v-show="currentStage === 'Capture'" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-2 space-y-6">
-                        <div class="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-3xl p-6 shadow-2xl relative overflow-hidden group">
-                            <div class="mb-4 flex items-center gap-3">
+                <div v-show="currentStage === 'Capture'" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-4">
+                        <div class="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-2xl relative overflow-hidden group">
+                            <div class="mb-3 flex items-center gap-2">
                                 <div class="bg-black/60 backdrop-blur-md text-white px-4 py-2 rounded-xl border border-white/10 flex items-center gap-2 shadow-lg w-full lg:w-auto">
                                     <i class="bi bi-camera-video text-indigo-400"></i>
                                     <select v-model="selectedCameraId" @change="startCamera"
@@ -254,24 +256,24 @@
                                 </div>
                             </div>
                             
-                            <div class="text-center mt-8">
+                            <div class="text-center mt-6">
                                 <button @click="startCountdown" 
                                         :disabled="isShooting || shots.length >= 3"
-                                        class="group relative inline-flex items-center justify-center px-12 py-5 rounded-full bg-white text-black font-bold text-xl tracking-wide disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.3)]">
-                                    <i class="bi bi-camera-fill mr-3 opacity-80"></i>
+                                        class="group relative inline-flex items-center justify-center px-10 py-4 rounded-full bg-white text-black font-bold text-lg tracking-wide disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.3)]">
+                                    <i class="bi bi-camera-fill mr-2 opacity-80"></i>
                                     {{ isShooting ? 'กำลังถ่าย...' : 'ถ่ายรูป (' + (shots.length+1) + '/3)' }}
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="space-y-6">
-                        <div class="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-3xl p-6 h-full flex flex-col shadow-2xl">
-                            <h5 class="text-xl font-bold text-white mb-6 flex items-center gap-3">
-                                <i class="bi bi-images text-indigo-400"></i>
+                    <div class="space-y-4">
+                        <div class="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-4 h-full flex flex-col shadow-2xl">
+                            <h5 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                                <i class="bi bi-images text-indigo-400 text-base"></i>
                                 รูปที่ถ่าย
                             </h5>
-                            <div class="space-y-4 flex-1">
+                            <div class="space-y-3 flex-1">
                                 <div v-for="(img, idx) in shots" :key="idx" 
                                      class="relative group aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-lg bg-black/50">
                                     <img :src="img" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition duration-500">
@@ -284,14 +286,14 @@
                                 </div>
                             </div>
                             
-                            <div v-if="shots.length === 3" class="space-y-3 pt-6 mt-auto">
+                            <div v-if="shots.length === 3" class="space-y-2 pt-4 mt-auto">
                                 <button @click="processStrip" 
-                                        class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-4 rounded-xl transition flex items-center justify-center gap-2 font-bold shadow-lg shadow-indigo-500/30 text-lg">
+                                        class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl transition flex items-center justify-center gap-2 font-bold shadow-lg shadow-indigo-500/30 text-base">
                                     <i class="bi bi-magic"></i>
                                     แต่งรูปภาพ
                                 </button>
                                 <button @click="retakeAll" 
-                                        class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white py-3 rounded-xl transition flex items-center justify-center gap-2 font-medium">
+                                        class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white py-2 rounded-xl transition flex items-center justify-center gap-2 font-medium text-sm">
                                     <i class="bi bi-arrow-counterclockwise"></i>
                                     ถ่ายใหม่ทั้งหมด
                                 </button>
@@ -303,71 +305,71 @@
 
                 <!-- STAGE 2: PREVIEW & PRINT -->
                 <transition name="fade" mode="out-in">
-                <div v-show="currentStage === 'Print'" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="space-y-6">
-                        <div class="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-3xl p-6 shadow-2xl">
-                            <h5 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                                <i class="bi bi-palette text-pink-400"></i>
+                <div v-show="currentStage === 'Print'" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="space-y-4">
+                        <div class="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-2xl">
+                            <h5 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                                <i class="bi bi-palette text-pink-400 text-base"></i>
                                 การตกแต่ง
                             </h5>
                             
-                            <div class="space-y-6">
+                            <div class="space-y-4">
                                 <div>
-                                    <label class="text-xs font-bold text-zinc-500 mb-2 block uppercase tracking-wider">พื้นหลัง</label>
-                                    <div class="grid grid-cols-2 gap-2 bg-black/30 p-1 rounded-xl">
+                                    <label class="text-[10px] font-bold text-zinc-500 mb-1.5 block uppercase tracking-wider">พื้นหลัง</label>
+                                    <div class="grid grid-cols-2 gap-1.5 bg-black/30 p-1 rounded-lg">
                                         <button @click="backgroundType = 'color'; regenerateStrip()"
                                                 :class="backgroundType === 'color' ? 'bg-indigo-600 text-white shadow-lg' : 'text-zinc-500 hover:text-zinc-300'"
-                                                class="py-2.5 rounded-lg transition text-sm font-medium flex items-center justify-center gap-2">
-                                            <i class="bi bi-paint-bucket"></i> สีพื้น
+                                                class="py-2 rounded-md transition text-xs font-medium flex items-center justify-center gap-1.5">
+                                            <i class="bi bi-paint-bucket text-xs"></i> สีพื้น
                                         </button>
                                         <button @click="backgroundType = 'image'; regenerateStrip()"
                                                 :class="backgroundType === 'image' ? 'bg-indigo-600 text-white shadow-lg' : 'text-zinc-500 hover:text-zinc-300'"
-                                                class="py-2.5 rounded-lg transition text-sm font-medium flex items-center justify-center gap-2">
-                                            <i class="bi bi-image"></i> รูปภาพ
+                                                class="py-2 rounded-md transition text-xs font-medium flex items-center justify-center gap-1.5">
+                                            <i class="bi bi-image text-xs"></i> รูปภาพ
                                         </button>
                                     </div>
                                 </div>
                                 
                                 <div v-if="backgroundType === 'color'">
-                                    <label class="text-xs font-bold text-zinc-500 mb-2 block uppercase tracking-wider">เลือกสี</label>
-                                    <div class="flex gap-2 items-center bg-black/20 p-2 rounded-xl border border-white/5">
+                                    <label class="text-[10px] font-bold text-zinc-500 mb-1.5 block uppercase tracking-wider">เลือกสี</label>
+                                    <div class="flex gap-1.5 items-center bg-black/20 p-1.5 rounded-lg border border-white/5">
                                         <input type="color" v-model="backgroundColor" @change="regenerateStrip"
-                                               class="w-10 h-10 rounded-lg cursor-pointer border py-0 px-0 overflow-hidden bg-transparent">
-                                        <span class="text-sm font-mono text-zinc-300">{{ backgroundColor }}</span>
+                                               class="w-8 h-8 rounded-md cursor-pointer border py-0 px-0 overflow-hidden bg-transparent">
+                                        <span class="text-xs font-mono text-zinc-300">{{ backgroundColor }}</span>
                                     </div>
                                 </div>
                                 
                                 <div v-if="backgroundType === 'image'">
-                                    <label class="text-xs font-bold text-zinc-500 mb-2 block uppercase tracking-wider">อัปโหลดรูปพื้นหลัง</label>
+                                    <label class="text-[10px] font-bold text-zinc-500 mb-1.5 block uppercase tracking-wider">อัปโหลดรูปพื้นหลัง</label>
                                     <input type="file" accept="image/*" @change="handleBackgroundUpload"
-                                           class="w-full text-sm text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 bg-black/20 rounded-xl border border-white/10 p-1">
+                                           class="w-full text-xs text-zinc-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 bg-black/20 rounded-lg border border-white/10 p-0.5">
                                 </div>
                                 
                                 <div>
-                                    <label class="text-xs font-bold text-zinc-500 mb-2 block uppercase tracking-wider">ข้อความวันที่</label>
+                                    <label class="text-[10px] font-bold text-zinc-500 mb-1.5 block uppercase tracking-wider">ข้อความวันที่</label>
                                     <input type="text" v-model="dateText" @input="regenerateStrip"
-                                           class="w-full px-4 py-3 rounded-xl bg-black/30 border border-white/10 text-white focus:border-indigo-500 outline-none">
+                                           class="w-full px-3 py-2 rounded-lg bg-black/30 border border-white/10 text-white focus:border-indigo-500 outline-none text-sm">
                                 </div>
                                 
-                                <hr class="border-white/10">
+                                <hr class="border-white/10 my-3">
                                 
                                 <button @click="printA4" 
-                                        class="w-full bg-white text-black hover:bg-zinc-200 py-4 rounded-xl transition flex items-center justify-center gap-2 font-bold text-lg shadow-lg">
-                                    <i class="bi bi-printer text-xl"></i>
+                                        class="w-full bg-white text-black hover:bg-zinc-200 py-3 rounded-xl transition flex items-center justify-center gap-2 font-bold text-base shadow-lg">
+                                    <i class="bi bi-printer text-lg"></i>
                                     สั่งพิมพ์
                                 </button>
                                 
                                 <button @click="currentStage = 'Capture'" 
-                                        class="w-full text-zinc-500 hover:text-white py-2 text-sm transition flex items-center justify-center gap-2">
+                                        class="w-full text-zinc-500 hover:text-white py-1.5 text-xs transition flex items-center justify-center gap-1">
                                     <i class="bi bi-arrow-left"></i>
                                     ย้อนกลับไปถ่ายใหม่
                                 </button>
                             </div>
                         </div>
                         
-                        <div class="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-3xl p-6 shadow-xl">
-                            <h6 class="text-xs font-bold text-zinc-500 mb-3 flex items-center gap-2 uppercase tracking-wider">
-                                <i class="bi bi-eye"></i>
+                        <div class="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-xl">
+                            <h6 class="text-[10px] font-bold text-zinc-500 mb-2 flex items-center gap-1.5 uppercase tracking-wider">
+                                <i class="bi bi-eye text-xs"></i>
                                 Preview
                             </h6>
                             <img :src="finalStripUrl" class="w-full shadow-2xl rounded-lg border border-white/20">
@@ -375,9 +377,9 @@
                     </div>
 
                     <div class="lg:col-span-2">
-                        <div class="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-3xl p-6 h-full flex flex-col shadow-2xl overflow-hidden relative">
-                            <h5 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                                <i class="bi bi-file-earmark-break text-indigo-400"></i>
+                        <div class="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-4 h-full flex flex-col shadow-2xl overflow-hidden relative">
+                            <h5 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                                <i class="bi bi-file-earmark-break text-indigo-400 text-base"></i>
                                 ตัวอย่าง Print Layout (A4)
                             </h5>
                             

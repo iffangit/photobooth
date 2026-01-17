@@ -172,7 +172,7 @@
         </div>
 
         <!-- Main Area -->
-        <div class="flex-1 overflow-auto p-3 lg:p-6 relative">
+        <div class="flex-1 overflow-hidden p-2 lg:p-4 relative flex flex-col h-screen">
             <div v-if="!selectedCustomer" class="flex items-center justify-center h-full">
                 <div class="text-center opacity-30 bg-black/20 p-8 rounded-3xl backdrop-blur-sm border border-white/5">
                     <i class="bi bi-camera text-8xl mb-6 text-white block"></i>
@@ -184,7 +184,7 @@
                 </div>
             </div>
 
-            <div v-else class="max-w-7xl mx-auto pt-8 lg:pt-0">
+            <div v-else class="max-w-7xl mx-auto w-full h-full flex flex-col">
                 <!-- Mobile Toggle -->
                 <button @click="showSidebar = true"
                     class="lg:hidden absolute top-3 left-3 z-20 p-1.5 text-white bg-black/40 backdrop-blur rounded-lg border border-white/10">
@@ -193,15 +193,15 @@
 
                 <!-- Header -->
                 <div
-                    class="bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 p-4 mb-6 rounded-2xl shadow-2xl overflow-hidden relative">
-                    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4">
+                    class="bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 p-3 mb-3 rounded-2xl shadow-2xl overflow-hidden relative flex-shrink-0">
+                    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-2">
                         <div class="flex items-center gap-3">
                             <div
-                                class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-2xl shadow-lg shadow-indigo-500/30">
+                                class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xl shadow-lg shadow-indigo-500/30">
                                 <i class="bi bi-person-fill"></i>
                             </div>
                             <div>
-                                <h2 class="text-2xl font-bold text-white mb-0.5">{{ selectedCustomer.name }}</h2>
+                                <h2 class="text-xl font-bold text-white mb-0.5">{{ selectedCustomer.name }}</h2>
                                 <p class="text-zinc-500 font-mono text-xs">{{ selectedCustomer.customer_code }}</p>
                             </div>
                         </div>
@@ -216,13 +216,13 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2 space-y-4">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-3 flex-1 min-h-0">
+                    <div class="lg:col-span-2 flex flex-col h-full min-h-0">
                         <div
-                            class="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-2xl relative overflow-hidden group">
-                            <div class="mb-3 flex items-center gap-2">
+                            class="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-3 shadow-2xl relative overflow-hidden group flex-1 flex flex-col">
+                            <div class="mb-2 flex-shrink-0 flex items-center gap-2">
                                 <div
-                                    class="bg-black/60 backdrop-blur-md text-white px-4 py-2 rounded-xl border border-white/10 flex items-center gap-2 shadow-lg w-full lg:w-auto">
+                                    class="bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-xl border border-white/10 flex items-center gap-2 shadow-lg w-full lg:w-auto">
                                     <i class="bi bi-camera-video text-indigo-400"></i>
                                     <select v-model="selectedCameraId" @change="startCamera"
                                         class="bg-transparent border-none text-sm focus:ring-0 outline-none cursor-pointer appearance-none w-full font-medium">
@@ -233,18 +233,18 @@
                                 </div>
                             </div>
 
-                            <div class="relative rounded-2xl overflow-hidden bg-black aspect-[4/3] shadow-inner">
-                                <video ref="video" class="camera-feed w-full h-full object-cover" autoplay playsinline
-                                    muted></video>
+                            <div class="relative rounded-xl overflow-hidden bg-black flex-1 shadow-inner w-full">
+                                <video ref="video" class="camera-feed w-full h-full object-cover bg-black" autoplay
+                                    playsinline muted></video>
                                 <div v-if="countdown > 0"
                                     class="absolute inset-0 flex items-center justify-center text-white/90 text-[180px] font-bold tracking-tighter backdrop-blur-sm bg-black/20">
                                     {{ countdown }}
                                 </div>
                             </div>
 
-                            <div class="text-center mt-6">
+                            <div class="text-center mt-3 flex-shrink-0">
                                 <button @click="startCountdown" :disabled="isShooting || shots.length >= 3"
-                                    class="group relative inline-flex items-center justify-center px-10 py-4 rounded-full bg-white text-black font-bold text-lg tracking-wide disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.3)]">
+                                    class="group relative inline-flex items-center justify-center px-8 py-3 rounded-full bg-white text-black font-bold text-base tracking-wide disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_rgba(255,255,255,0.3)]">
                                     <i class="bi bi-camera-fill mr-2 opacity-80"></i>
                                     {{ isShooting ? 'กำลังถ่าย...' : 'ถ่ายรูป (' + (shots.length+1) + '/3)' }}
                                 </button>
@@ -252,37 +252,37 @@
                         </div>
                     </div>
 
-                    <div class="space-y-4">
+                    <div class="flex flex-col h-full min-h-0">
                         <div
-                            class="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-4 h-full flex flex-col shadow-2xl">
-                            <h5 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                                <i class="bi bi-images text-indigo-400 text-base"></i>
+                            class="bg-zinc-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-3 h-full flex flex-col shadow-2xl">
+                            <h5 class="text-base font-bold text-white mb-2 flex-shrink-0 flex items-center gap-2">
+                                <i class="bi bi-images text-indigo-400"></i>
                                 รูปที่ถ่าย
                             </h5>
-                            <div class="space-y-3 flex-1">
+                            <div class="space-y-2 flex-1 overflow-y-auto min-h-0 pr-1 custom-scrollbar">
                                 <div v-for="(img, idx) in shots" :key="idx"
-                                    class="relative group aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-lg bg-black/50">
+                                    class="relative group aspect-[4/3] rounded-xl overflow-hidden border border-white/10 shadow-lg bg-black/50 flex-shrink-0">
                                     <img :src="img"
                                         class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition duration-500">
                                     <div
-                                        class="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded-md backdrop-blur-md">
+                                        class="absolute top-2 right-2 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded backdrop-blur-md">
                                         #{{ idx + 1 }}
                                     </div>
                                 </div>
                                 <div v-if="shots.length === 0"
-                                    class="text-center py-20 text-zinc-600 border-2 border-dashed border-white/10 rounded-2xl">
-                                    รอถ่ายภาพ...
+                                    class="text-center py-12 text-zinc-600 border-2 border-dashed border-white/10 rounded-xl h-32 flex items-center justify-center">
+                                    <span class="text-sm">รอถ่ายภาพ...</span>
                                 </div>
                             </div>
 
-                            <div v-if="shots.length === 3" class="space-y-2 pt-4 mt-auto">
+                            <div v-if="shots.length === 3" class="space-y-2 pt-3 mt-auto flex-shrink-0">
                                 <button @click="finishSession"
-                                    class="w-full bg-green-600 hover:bg-green-500 text-white py-3 rounded-xl transition flex items-center justify-center gap-2 font-bold shadow-lg shadow-green-500/30 text-base">
+                                    class="w-full bg-green-600 hover:bg-green-500 text-white py-2.5 rounded-xl transition flex items-center justify-center gap-2 font-bold shadow-lg shadow-green-500/30 text-sm">
                                     <i class="bi bi-send-check"></i>
                                     ส่งไปห้องปริ้น
                                 </button>
                                 <button @click="retakeAll"
-                                    class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white py-2 rounded-xl transition flex items-center justify-center gap-2 font-medium text-sm">
+                                    class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white py-2 rounded-xl transition flex items-center justify-center gap-2 font-medium text-xs">
                                     <i class="bi bi-arrow-counterclockwise"></i>
                                     ถ่ายใหม่ทั้งหมด
                                 </button>

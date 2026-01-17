@@ -275,7 +275,7 @@
                                 </div>
                             </div>
 
-                            <div v-if="shots.length === 3" class="space-y-2 pt-3 mt-auto flex-shrink-0">
+                            <div v-if="shots.length >= 3" class="space-y-2 pt-3 mt-auto flex-shrink-0">
                                 <button @click="finishSession"
                                     class="w-full bg-green-600 hover:bg-green-500 text-white py-2.5 rounded-xl transition flex items-center justify-center gap-2 font-bold shadow-lg shadow-green-500/30 text-sm">
                                     <i class="bi bi-send-check"></i>

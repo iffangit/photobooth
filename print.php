@@ -532,11 +532,20 @@
                     });
 
                     Promise.all(photoPromises).then(imgs => {
-                        const x = 60, w = 480, h = 360;
+                        // Layout Config for 3 Photos (Reverted)
+                        // Strip Width: 600px
+                        // Photo Width: 520px (leaving 40px margin on each side)
+                        // Photo Height: 390px (4:3 aspect ratio)
+                        // Gap: 20px
+                        // Top Margin: 40px
+                        // Total Height used for photos: 40 + (390*3) + (20*2) = 1250px. perfect.
+
+                        const x = 40, w = 520, h = 390;
+                        const gap = 20;
+                        const startY = 40;
+
                         imgs.forEach((img, i) => {
-                            let y = 50 + (i * 420);
-                            ctx.fillStyle = 'white';
-                            ctx.fillRect(x - 10, y - 10, w + 20, h + 20);
+                            let y = startY + (i * (h + gap));
 
                             const sourceRatio = img.width / img.height;
                             const targetRatio = w / h;

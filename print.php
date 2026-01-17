@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
         body {
             font-family: 'Prompt', 'Inter', sans-serif;
@@ -574,19 +574,19 @@
                         ctx.save();
                         ctx.translate(28, 1250);
                         ctx.rotate(-Math.PI / 2);
-                        ctx.font = '200 18px "Inconsolata", monospace';
+                        ctx.font = '400 18px "Inconsolata", monospace';
                         ctx.textAlign = 'left';
                         ctx.fillText(this.dateText, 0, 0);
                         ctx.restore();
 
                         if (this.selectedCustomer) {
-                            ctx.font = '200 18px "Inconsolata", monospace';
+                            ctx.font = '400 18px "Inconsolata", monospace';
                             ctx.textAlign = 'right';
                             let code = this.selectedCustomer.customer_code.split('-')[1] || this.selectedCustomer.customer_code;
                             ctx.fillText(code, 560, 28);
                         }
 
-                        ctx.font = '200 18px "Inconsolata", monospace';
+                        ctx.font = '400 18px "Inconsolata", monospace';
                         ctx.textAlign = 'left'; // ซ้าย/กลาง/ขวา
                         ctx.fillText('msj', 40, 28); // X=300 (กลาง), Y=1780 (ล่างสุด)
                         this.finalStripUrl = canvas.toDataURL('image/png');

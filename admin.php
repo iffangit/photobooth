@@ -37,8 +37,8 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Capture Mode -->
-            <a href="capture.php"
+            <!-- Selfie Mode -->
+            <a href="selfie.php"
                 class="group relative glass-card p-10 rounded-3xl transition-all duration-500 hover:scale-105 hover:bg-white/10 hover:border-indigo-500/50 shadow-2xl hover:shadow-[0_0_50px_rgba(99,102,241,0.3)] block overflow-hidden">
                 <div
                     class="absolute inset-0 bg-gradient-to-br from-indigo-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -50,16 +50,16 @@
                         <i class="bi bi-camera-fill text-4xl text-white"></i>
                     </div>
                     <div>
-                        <h2 class="text-3xl font-bold text-white mb-2">Capture Mode</h2>
-                        <h3 class="text-xl text-indigo-300 font-medium">โหมดถ่ายภาพ</h3>
+                        <h2 class="text-3xl font-bold text-white mb-2">Selfie Mode</h2>
+                        <h3 class="text-xl text-indigo-300 font-medium">โหมดถ่ายรูปด้วยตนเอง</h3>
                     </div>
                     <p class="text-zinc-400 text-sm leading-relaxed">
-                        สำหรับช่างภาพ<br>
-                        จัดการคิวถ่ายรูป • ควบคุมกล้อง • ถ่ายภาพ
+                        สำหรับลูกค้า<br>
+                        เลือกคิวเอง • ถ่ายรูปเอง • ใช้งานง่าย
                     </p>
                     <div
                         class="mt-4 px-6 py-2 rounded-full border border-white/20 text-sm text-zinc-300 group-hover:bg-white group-hover:text-black font-semibold transition-all">
-                        เข้าสู่ระบบถ่ายภาพ <i class="bi bi-arrow-right ml-1"></i>
+                        เปิดหน้าจอถ่ายรูป <i class="bi bi-arrow-right ml-1"></i>
                     </div>
                 </div>
             </a>

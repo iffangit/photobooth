@@ -1,10 +1,15 @@
-<?php require_once '../includes/auth_check.php'; ?>
+<?php
+require_once '../includes/auth_check.php';
+require_once '../includes/csrf.php';
+?>
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Print & Deliver - Photobooth</title>
+    <title>Print Mode - MSJ-BOOTH</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="csrf-token" content="<?php echo CSRF::generate(); ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
@@ -424,6 +429,9 @@
     </div>
 
     <script>
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+
         new Vue({
             el: '#app',
             data: {

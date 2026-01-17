@@ -1,10 +1,15 @@
+<?php
+session_start();
+require_once '../includes/csrf.php';
+?>
 <!DOCTYPE html>
 <html lang="th">
 
 <head>
     <meta charset="UTF-8">
-    <title>ลงทะเบียน - Photobooth</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<?php echo CSRF::generate(); ?>">
+    <title>ลงทะเบียน - MSJ-BOOTH</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap"
@@ -115,6 +120,7 @@
             btn.classList.add('opacity-75', 'cursor-not-allowed');
 
             const formData = new FormData(this);
+            formData.append('csrf_token', document.querySelector('meta[name="csrf-token"]').content);
 
             fetch('../api/api.php?action=register', {
                 method: 'POST',

@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once 'includes/csrf.php';
 
 // Check if user is already logged in
 if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
@@ -14,6 +15,7 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - MSJ-BOOTH</title>
+    <meta name="csrf-token" content="<?php echo CSRF::generate(); ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
@@ -117,6 +119,8 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
             btn.classList.add('opacity-75', 'cursor-not-allowed');
 
             const formData = new FormData(this);
+            // Append CSRF Token
+            formData.append('csrf_token', document.querySelector('meta[name="csrf-token"]').content);
 
             fetch('api/api.php?action=login', {
                 method: 'POST',

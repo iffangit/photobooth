@@ -9,15 +9,19 @@ $action = $_GET['action'] ?? '';
 if ($action === 'register' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'] ?? '';
     $contact = $_POST['contact'] ?? '';
-    
-    if (!$name) { echo json_encode(['success' => false, 'error' => 'Name required']); exit; }
+    $qty = $_POST['qty'] ?? 1;
+
+    if (!$name) {
+        echo json_encode(['success' => false, 'error' => 'Name required']);
+        exit;
+    }
 
     // Generate Code: YYYYMMDD-HHmm
-    $code = date('Ymd-His'); 
+    $code = date('Ymd-His');
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO queue (customer_code, name, contact, status) VALUES (?, ?, ?, 'ลงทะเบียนแล้ว')");
-        if ($stmt->execute([$code, $name, $contact])) {
+        $stmt = $pdo->prepare("INSERT INTO queue (customer_code, name, contact, status, quantity) VALUES (?, ?, ?, 'ลงทะเบียนแล้ว', ?)");
+        if ($stmt->execute([$code, $name, $contact, $qty])) {
             echo json_encode(['success' => true, 'id' => $code]);
         } else {
             echo json_encode(['success' => false, 'error' => 'Insert Failed']);
@@ -61,15 +65,15 @@ if ($action === 'upload_image' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $imageData = $data['image']; // Base64 string
     $customerId = $data['id'];
     $index = $data['index']; // 1, 2, 3 or 'final'
-    
+
     // Convert Base64 to File
     $imageData = str_replace('data:image/png;base64,', '', $imageData);
     $imageData = str_replace(' ', '+', $imageData);
     $imageBytes = base64_decode($imageData);
-    
+
     $fileName = "{$customerId}_{$index}.png";
     $filePath = 'uploads/' . $fileName;
-    
+
     if (file_put_contents($filePath, $imageBytes)) {
         echo json_encode(['success' => true, 'url' => $filePath]);
     } else {

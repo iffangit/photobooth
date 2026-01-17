@@ -457,7 +457,7 @@
                 fetchQueue() {
                     axios.get('api.php?action=get_queue')
                         .then(res => {
-                            this.queue = res.data.sort((a, b) => b.id - a.id);
+                            this.queue = res.data.sort((a, b) => a.id - b.id);
                             this.isLoadingQueue = false;
                         })
                         .catch(err => {

@@ -231,7 +231,7 @@
 
                         <div class="flex flex-wrap items-center gap-2">
                             <div
-                                class="flex items-center gap-1 bg-black/40 border border-white/10 px-2 rounded-xl backdrop-blur-md h-[36px]">
+                                class="flex items-center gap-1 bg-black/40 border border-white/10 px-2 rounded-xl backdrop-blur-md h-[37px]">
                                 <button @click="decreaseQty"
                                     class="w-6 h-6 bg-white/5 text-white rounded-lg hover:bg-white/20 transition flex items-center justify-center border border-white/10 flex-shrink-0">
                                     <i class="bi bi-dash"></i>

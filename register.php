@@ -89,6 +89,12 @@
                     <i class="bi bi-cloud-upload"></i>
                     <span>ลงทะเบียนเข้าคิว</span>
                 </button>
+
+                <a href="queue.php"
+                    class="w-full flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white py-3.5 rounded-xl border border-white/10 transition mt-4 font-medium shadow-lg">
+                    <i class="bi bi-list-ol"></i>
+                    <span>ดูคิวทั้งหมด</span>
+                </a>
             </form>
         </div>
 

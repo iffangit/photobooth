@@ -110,11 +110,6 @@
                         <p class="text-xs text-zinc-400">Self-Service Photo Booth</p>
                     </div>
                 </div>
-                <a href="admin.php"
-                    class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition flex items-center gap-2 text-sm">
-                    <i class="bi bi-house-door"></i>
-                    หน้าหลัก
-                </a>
             </div>
         </div>
 

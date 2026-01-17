@@ -34,7 +34,7 @@
         <div class="p-8 pt-4">
             <form id="regForm" class="space-y-6">
                 <div>
-                    <label class="block text-xs font-bold text-zinc-400 mb-2 uppercase tracking-wider">ชื่อของคุณ (Name)</label>
+                    <label class="block text-xs font-bold text-zinc-400 mb-2 uppercase tracking-wider">ชื่อของคุณ</label>
                     <div class="relative group">
                         <i class="bi bi-person absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500 group-focus-within:text-white transition"></i>
                         <input type="text" name="name" 
@@ -44,7 +44,7 @@
                 </div>
                 
                 <div>
-                    <label class="block text-xs font-bold text-zinc-400 mb-2 uppercase tracking-wider">เบอร์โทร / รหัสนักศึกษา (Optional)</label>
+                    <label class="block text-xs font-bold text-zinc-400 mb-2 uppercase tracking-wider">เบอร์ติดต่อ</label>
                     <div class="relative group">
                         <i class="bi bi-telephone absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500 group-focus-within:text-white transition"></i>
                         <input type="text" name="contact" 

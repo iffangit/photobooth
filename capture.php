@@ -157,6 +157,10 @@
                             <i class="bi bi-hash"></i>
                             {{ c.customer_code.split('-')[1] || c.customer_code }}
                         </div>
+                        <div v-if="c.contact" class="flex items-center gap-2 text-xs text-zinc-400 mt-1">
+                            <i class="bi bi-telephone"></i>
+                            {{ c.contact }}
+                        </div>
                     </div>
                 </div>
             </div>

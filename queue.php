@@ -25,7 +25,7 @@
     <div class="fixed inset-0 bg-black/75 backdrop-blur-sm z-0"></div>
 
     <div id="app"
-        class="min-h-screen flex flex-col bg-gradient-to-br from-zinc-950 via-black to-zinc-900 text-white relative overflow-x-hidden">
+        class="h-screen flex flex-col bg-gradient-to-br from-zinc-950 via-black to-zinc-900 text-white relative overflow-hidden">
         <!-- Background Gradient Orbs -->
         <div
             class="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none">
@@ -56,8 +56,9 @@
         </div>
 
         <!-- Main Content - Responsive Grid -->
-        <div class="flex-1 p-2 md:p-8 overflow-y-auto">
-            <div class="h-full w-full max-w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-3 md:gap-6 pb-20">
+        <div class="flex-1 p-2 md:p-8 overflow-y-auto md:overflow-hidden">
+            <div
+                class="h-full w-full max-w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-3 md:gap-6 pb-20 md:pb-0">
 
                 <!-- COL 1: WAITING (REGISTERED) -->
                 <div

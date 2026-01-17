@@ -25,7 +25,7 @@
     <div class="fixed inset-0 bg-black/75 backdrop-blur-sm z-0"></div>
 
     <div id="app"
-        class="min-h-screen flex flex-col bg-gradient-to-br from-zinc-950 via-black to-zinc-900 text-white relative">
+        class="min-h-screen flex flex-col bg-gradient-to-br from-zinc-950 via-black to-zinc-900 text-white relative overflow-x-hidden">
         <!-- Background Gradient Orbs -->
         <div
             class="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none">
@@ -56,12 +56,12 @@
         </div>
 
         <!-- Main Content - Responsive Grid -->
-        <div class="flex-1 p-4 md:p-8 overflow-y-auto">
-            <div class="h-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 md:gap-6">
+        <div class="flex-1 p-2 md:p-8 overflow-y-auto">
+            <div class="h-full w-full max-w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-3 md:gap-6 pb-20">
 
                 <!-- COL 1: WAITING (REGISTERED) -->
                 <div
-                    class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border border-white/10 flex flex-col overflow-hidden shadow-xl max-h-[calc(100vh-180px)] min-h-[400px]">
+                    class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border border-white/10 flex flex-col overflow-hidden shadow-xl lg:h-[calc(100vh-180px)] h-[400px]">
                     <div
                         class="p-3 border-b border-white/10 bg-black/20 flex justify-between items-center flex-shrink-0">
                         <h2 class="text-base font-bold text-zinc-300 flex items-center gap-2 uppercase tracking-tight">
@@ -87,7 +87,7 @@
 
                 <!-- COL 2: SHOOTING (ACTIVE) -->
                 <div
-                    class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border-2 border-indigo-500/30 flex flex-col overflow-hidden shadow-[0_0_30px_rgba(99,102,241,0.1)] relative max-h-[calc(100vh-180px)] min-h-[400px]">
+                    class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border-2 border-indigo-500/30 flex flex-col overflow-hidden shadow-[0_0_30px_rgba(99,102,241,0.1)] relative lg:h-[calc(100vh-180px)] h-[400px]">
                     <div class="p-3 border-b border-indigo-500/20 bg-indigo-900/10 text-center flex-shrink-0">
                         <h2
                             class="text-lg font-bold text-indigo-300 flex items-center justify-center gap-2 uppercase tracking-wider">
@@ -132,7 +132,7 @@
 
                 <!-- COL 3: PROCESSING (PRINT/DELIVER) -->
                 <div
-                    class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border border-yellow-500/20 flex flex-col overflow-hidden shadow-xl max-h-[calc(100vh-180px)] min-h-[400px]">
+                    class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border border-yellow-500/20 flex flex-col overflow-hidden shadow-xl lg:h-[calc(100vh-180px)] h-[400px]">
                     <div class="p-3 border-b border-yellow-500/10 bg-yellow-900/10 text-center flex-shrink-0">
                         <h2
                             class="text-lg font-bold text-yellow-500 flex items-center justify-center gap-2 uppercase tracking-wider">
@@ -142,10 +142,15 @@
                     <div class="flex-1 overflow-y-auto p-3 custom-scrollbar">
                         <div class="flex flex-col gap-3">
                             <div v-for="c in processingQueue" :key="c.id"
-                                class="bg-gradient-to-r from-yellow-600/10 to-orange-600/10 border border-yellow-500/30 p-3 rounded-xl shadow-lg flex items-center gap-3">
+                                :class="c.status === 'รอส่งมอบ' || c.status === 'WaitingDeliver' 
+                                    ? 'bg-gradient-to-r from-pink-600/10 to-rose-600/10 border border-pink-500/30' 
+                                    : 'bg-gradient-to-r from-yellow-600/10 to-orange-600/10 border border-yellow-500/30'"
+                                class="p-3 rounded-xl shadow-lg flex items-center gap-3 transition-colors duration-300">
 
-                                <div
-                                    class="px-3 py-1.5 rounded-full bg-yellow-600 text-black text-sm font-bold font-mono shadow-sm whitespace-nowrap">
+                                <div :class="c.status === 'รอส่งมอบ' || c.status === 'WaitingDeliver' 
+                                        ? 'bg-pink-600 text-white' 
+                                        : 'bg-yellow-600 text-black'"
+                                    class="px-3 py-1.5 rounded-full text-sm font-bold font-mono shadow-sm whitespace-nowrap">
                                     {{ c.customer_code.split('-')[1] || 'Q' }}
                                 </div>
 
@@ -154,11 +159,22 @@
                                 </div>
 
                                 <div class="flex flex-col items-end gap-1 flex-shrink-0">
-                                    <i class="bi bi-printer-fill text-yellow-500 animate-pulse text-2xl"></i>
-                                    <div
-                                        class="flex items-center gap-1.5 text-[10px] text-yellow-500 font-bold uppercase tracking-wide bg-yellow-500/10 px-2 py-0.5 rounded-full border border-yellow-500/20">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>
-                                        {{ c.status === 'รอปริ้น' ? 'กำลังพิมพ์' : 'รอรับรูป' }}
+                                    <!-- Icon: Print for Printing, Box for Deliver -->
+                                    <i v-if="c.status === 'รอปริ้น' || c.status === 'WaitingPrint'"
+                                        class="bi bi-printer-fill text-yellow-500 animate-pulse text-2xl"></i>
+                                    <i v-else class="bi bi-box-seam-fill text-pink-500 animate-bounce text-2xl"></i>
+
+                                    <!-- Status Badge -->
+                                    <div :class="c.status === 'รอส่งมอบ' || c.status === 'WaitingDeliver'
+                                            ? 'text-pink-500 bg-pink-500/10 border-pink-500/20'
+                                            : 'text-yellow-500 bg-yellow-500/10 border-yellow-500/20'"
+                                        class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full border">
+
+                                        <span
+                                            :class="c.status === 'รอส่งมอบ' || c.status === 'WaitingDeliver' ? 'bg-pink-500' : 'bg-yellow-500'"
+                                            class="w-1.5 h-1.5 rounded-full animate-pulse"></span>
+                                        {{ c.status === 'รอปริ้น' || c.status === 'WaitingPrint' ? 'กำลังพิมพ์' :
+                                        'รอรับรูป' }}
                                     </div>
                                 </div>
                             </div>
@@ -173,7 +189,7 @@
 
                 <!-- COL 4: DONE (RECENT) -->
                 <div
-                    class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border border-green-500/20 flex flex-col overflow-hidden shadow-xl max-h-[calc(100vh-180px)] min-h-[400px]">
+                    class="lg:col-span-3 bg-zinc-900/40 backdrop-blur-xl rounded-2xl border border-green-500/20 flex flex-col overflow-hidden shadow-xl lg:h-[calc(100vh-180px)] h-[400px]">
                     <div
                         class="p-3 border-b border-green-500/10 bg-green-900/10 flex justify-between items-center flex-shrink-0">
                         <h2 class="text-base font-bold text-green-300 flex items-center gap-2 uppercase tracking-tight">

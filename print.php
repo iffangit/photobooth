@@ -556,12 +556,12 @@
                         ctx.fillStyle = 'white';
                         ctx.font = '500 32px "Prompt", sans-serif';
                         ctx.textAlign = 'left';
-                        ctx.fillText(this.dateText, 40, 1720);
+                        ctx.fillText(this.dateText, 40, 1760);
 
                         if (this.selectedCustomer) {
                             ctx.font = '600 36px "Prompt", sans-serif';
                             ctx.textAlign = 'right';
-                            ctx.fillText(this.selectedCustomer.name, 560, 1720);
+                            ctx.fillText(this.selectedCustomer.name, 560, 1760);
                         }
                         this.finalStripUrl = canvas.toDataURL('image/png');
                     });

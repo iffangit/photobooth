@@ -166,6 +166,52 @@
 
             </transition>
 
+            <!-- Screen 1.5: Instructions -->
+            <transition name="fade">
+                <div v-if="currentScreen === 'instructions'"
+                    class="absolute inset-0 z-20 flex items-center justify-center bg-black/90 backdrop-blur-xl p-6">
+                    <div class="max-w-md w-full text-center">
+                        <div
+                            class="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full mx-auto mb-8 flex items-center justify-center shadow-lg shadow-indigo-500/30 animate-bounce">
+                            <i class="bi bi-camera-fill text-5xl text-white"></i>
+                        </div>
+
+                        <h2 class="text-4xl font-bold text-white mb-8">คำแนะนำก่อนถ่าย</h2>
+
+                        <div class="space-y-6 mb-10 text-left bg-white/5 p-6 rounded-3xl border border-white/10">
+                            <div class="flex items-center gap-4">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold shrink-0">1</span>
+                                <p class="text-xl text-zinc-200">เตรียมตัวให้พร้อม</p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold shrink-0">2</span>
+                                <p
+                                    class="text-2xl text-white font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                                    ระบบจะถ่ายอัตโนมัติ 3 รูป</p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-pink-500 flex items-center justify-center text-white font-bold shrink-0">3</span>
+                                <p class="text-xl text-zinc-200">เปลี่ยนท่าโพสต์ได้เลย!</p>
+                            </div>
+                        </div>
+
+                        <button @click="startSession"
+                            class="w-full bg-white text-black hover:bg-zinc-200 py-4 rounded-2xl transition flex items-center justify-center gap-3 text-xl font-bold shadow-xl hover:scale-105 active:scale-95">
+                            <i class="bi bi-play-fill text-3xl"></i>
+                            พร้อมแล้ว! เริ่มเลย
+                        </button>
+
+                        <button @click="currentScreen = 'queue'; selectedCustomer = null"
+                            class="mt-4 text-zinc-500 hover:text-zinc-300 text-sm py-2">
+                            ยกเลิก
+                        </button>
+                    </div>
+                </div>
+            </transition>
+
             <!-- Screen 2: Camera -->
             <transition name="fade">
                 <div v-if="currentScreen === 'camera'" class="absolute inset-0 flex flex-col bg-black">
@@ -332,14 +378,17 @@
                     this.selectedCustomer = customer;
                     this.shots = [];
                     this.photosTaken = 0;
-                    this.currentScreen = 'camera';
+                    this.currentScreen = 'instructions';
 
                     // Update status to Shooting
                     axios.post('api.php?action=update_status', {
                         id: customer.customer_code,
                         status: 'กำลังถ่าย'
                     }).catch(console.error);
+                },
 
+                startSession() {
+                    this.currentScreen = 'camera';
                     this.$nextTick(() => {
                         this.startCamera();
                     });

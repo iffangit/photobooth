@@ -2,7 +2,7 @@
 // api.php
 session_start();
 header('Content-Type: application/json');
-require 'config.php';
+require '../includes/config.php';
 
 $action = $_GET['action'] ?? '';
 

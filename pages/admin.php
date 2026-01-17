@@ -1,4 +1,4 @@
-<?php require_once 'auth_check.php'; ?>
+<?php require_once '../includes/auth_check.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -108,11 +108,11 @@
     <script>
         function logout() {
             if (confirm('ต้องการออกจากระบบหรือไม่?')) {
-                fetch('api.php?action=logout')
+                fetch('../api/api.php?action=logout')
                     .then(res => res.json())
                     .then(data => {
                         if (data.success) {
-                            window.location.href = 'login.php';
+                            window.location.href = '../login.php';
                         }
                     });
             }

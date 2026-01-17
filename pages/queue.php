@@ -256,7 +256,7 @@
                 },
                 methods: {
                     fetchQueue() {
-                        axios.get('api.php?action=get_queue')
+                        axios.get('../api/api.php?action=get_queue')
                             .then(res => { this.queue = res.data; })
                             .catch(err => console.error(err));
                     },

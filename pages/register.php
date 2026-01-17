@@ -116,7 +116,7 @@
 
             const formData = new FormData(this);
 
-            fetch('api.php?action=register', {
+            fetch('../api/api.php?action=register', {
                 method: 'POST',
                 body: formData
             })

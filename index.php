@@ -49,7 +49,7 @@
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Register Card -->
-                <a href="register.php"
+                <a href="pages/register.php"
                     class="group relative glass-card p-8 rounded-2xl transition-all duration-500 hover:scale-105 hover:bg-white/10 hover:border-green-500/50 shadow-2xl hover:shadow-[0_0_50px_rgba(34,197,94,0.3)] block overflow-hidden">
                     <div
                         class="absolute inset-0 bg-gradient-to-br from-green-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -69,7 +69,7 @@
                 </a>
 
                 <!-- Queue Card -->
-                <a href="queue.php"
+                <a href="pages/queue.php"
                     class="group relative glass-card p-8 rounded-2xl transition-all duration-500 hover:scale-105 hover:bg-white/10 hover:border-blue-500/50 shadow-2xl hover:shadow-[0_0_50px_rgba(59,130,246,0.3)] block overflow-hidden">
                     <div
                         class="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">

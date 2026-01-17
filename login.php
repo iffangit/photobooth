@@ -3,7 +3,7 @@ session_start();
 
 // Check if user is already logged in
 if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
-    header('Location: admin.php');
+    header('Location: pages/admin.php');
     exit;
 }
 ?>
@@ -118,7 +118,7 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
 
             const formData = new FormData(this);
 
-            fetch('api.php?action=login', {
+            fetch('api/api.php?action=login', {
                 method: 'POST',
                 body: formData
             })
@@ -129,7 +129,7 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
                         btn.classList.remove('opacity-75');
                         btn.classList.add('bg-green-600');
                         setTimeout(() => {
-                            window.location.href = 'admin.php';
+                            window.location.href = 'pages/admin.php';
                         }, 500);
                     } else {
                         errorText.textContent = data.error || 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';

@@ -1,4 +1,4 @@
-<?php require_once 'auth_check.php'; ?>
+<?php require_once '../includes/auth_check.php'; ?>
 <!DOCTYPE html>
 <html>
 
@@ -361,7 +361,7 @@
             },
             methods: {
                 fetchQueue() {
-                    axios.get('api.php?action=get_queue')
+                    axios.get('../api/api.php?action=get_queue')
                         .then(res => {
                             this.queue = res.data
                                 .filter(c => c.status === 'Registered' || c.status === 'ลงทะเบียนแล้ว')
@@ -377,7 +377,7 @@
                     this.currentScreen = 'instructions';
 
                     // Update status to Shooting
-                    axios.post('api.php?action=update_status', {
+                    axios.post('../api/api.php?action=update_status', {
                         id: customer.customer_code,
                         status: 'กำลังถ่าย'
                     }).catch(console.error);
@@ -502,7 +502,7 @@
 
                         // Upload all 3 photos
                         for (let i = 0; i < 3; i++) {
-                            await axios.post('api.php?action=upload_image', {
+                            await axios.post('../api/api.php?action=upload_image', {
                                 image: this.shots[i],
                                 id: customerId,
                                 index: i + 1
@@ -510,7 +510,7 @@
                         }
 
                         // Update status to WaitingPrint
-                        await axios.post('api.php?action=update_status', {
+                        await axios.post('../api/api.php?action=update_status', {
                             id: customerId,
                             status: 'รอปริ้น'
                         });
@@ -539,7 +539,7 @@
                 cancelSession() {
                     // Revert status to Registered if valid customer selected
                     if (this.selectedCustomer) {
-                        axios.post('api.php?action=update_status', {
+                        axios.post('../api/api.php?action=update_status', {
                             id: this.selectedCustomer.customer_code,
                             status: 'ลงทะเบียนแล้ว'
                         }).catch(console.error);

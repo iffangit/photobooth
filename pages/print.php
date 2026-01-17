@@ -1,4 +1,4 @@
-<?php require_once 'auth_check.php'; ?>
+<?php require_once '../includes/auth_check.php'; ?>
 <!DOCTYPE html>
 <html>
 
@@ -462,7 +462,7 @@
                     return Math.min(6, remaining);
                 },
                 fetchQueue() {
-                    axios.get('api.php?action=get_queue')
+                    axios.get('../api/api.php?action=get_queue')
                         .then(res => {
                             this.queue = res.data.sort((a, b) => a.id - b.id);
                             this.isLoadingQueue = false;
@@ -477,7 +477,7 @@
                     this.selectedCustomer = c;
                     this.shots = [];
                     // Fetch images to print
-                    axios.get(`api.php?action=get_images&id=${c.customer_code}`)
+                    axios.get(`../api/api.php?action=get_images&id=${c.customer_code}`)
                         .then(res => {
                             if (res.data.images && res.data.images.length > 0) {
                                 this.shots = res.data.images;
@@ -486,13 +486,13 @@
                         });
                 },
                 updateStatus(id, status) {
-                    axios.post('api.php?action=update_status', { id, status });
+                    axios.post('../api/api.php?action=update_status', { id, status });
                     if (this.selectedCustomer && this.selectedCustomer.customer_code === id) {
                         this.selectedCustomer.status = status;
                     }
                 },
                 updateQty() {
-                    axios.post('api.php?action=update_qty', { id: this.selectedCustomer.customer_code, qty: this.selectedCustomer.quantity });
+                    axios.post('../api/api.php?action=update_qty', { id: this.selectedCustomer.customer_code, qty: this.selectedCustomer.quantity });
                 },
                 increaseQty() {
                     this.selectedCustomer.quantity = parseInt(this.selectedCustomer.quantity) + 1;

@@ -1,5 +1,6 @@
 <?php
 // api.php
+session_start();
 header('Content-Type: application/json');
 require 'config.php';
 
@@ -30,6 +31,29 @@ if ($action === 'register' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         http_response_code(400); // Bad Request
         echo json_encode(['success' => false, 'error' => 'Database Error: ' . $e->getMessage()]);
     }
+    exit;
+}
+
+// LOGIN
+if ($action === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    // Simple hardcoded credentials (for production, use database with hashed passwords)
+    if ($username === 'admin' && $password === '123') {
+        $_SESSION['admin_logged_in'] = true;
+        $_SESSION['admin_username'] = $username;
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง']);
+    }
+    exit;
+}
+
+// LOGOUT
+if ($action === 'logout') {
+    session_destroy();
+    echo json_encode(['success' => true]);
     exit;
 }
 

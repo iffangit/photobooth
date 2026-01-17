@@ -1,3 +1,4 @@
+<?php require_once 'auth_check.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -94,11 +95,29 @@
 
         <div class="mt-12 text-center">
             <a href="queue.php" target="_blank"
-                class="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors text-sm">
+                class="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors text-sm mr-4">
                 <i class="bi bi-display"></i> เปิดหน้าจอคิว (Queue Display)
             </a>
+            <button onclick="logout()"
+                class="inline-flex items-center gap-2 text-red-500 hover:text-red-400 transition-colors text-sm">
+                <i class="bi bi-box-arrow-right"></i> ออกจากระบบ
+            </button>
         </div>
     </div>
+
+    <script>
+        function logout() {
+            if (confirm('ต้องการออกจากระบบหรือไม่?')) {
+                fetch('api.php?action=logout')
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.href = 'login.php';
+                        }
+                    });
+            }
+        }
+    </script>
 </body>
 
 </html>

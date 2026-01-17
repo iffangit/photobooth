@@ -431,7 +431,7 @@
                 toasts: [],
                 dateText: new Date().toLocaleDateString('en-GB'),
                 backgroundType: 'color',
-                backgroundColor: '#ffeaa7',
+                backgroundColor: '#000000',
                 customBgImage: null,
                 finalStripUrl: null
             },
@@ -565,14 +565,15 @@
                         });
 
                         ctx.fillStyle = 'white';
-                        ctx.font = '500 32px "Prompt", sans-serif';
+                        ctx.font = '200 28px "Inconsolata", monospace';
                         ctx.textAlign = 'left';
                         ctx.fillText(this.dateText, 40, 1760);
 
                         if (this.selectedCustomer) {
-                            ctx.font = '600 36px "Prompt", sans-serif';
+                            ctx.font = '200 28px "Inconsolata", monospace';
                             ctx.textAlign = 'right';
-                            ctx.fillText(this.selectedCustomer.name, 560, 1760);
+                            let code = this.selectedCustomer.customer_code.split('-')[1] || this.selectedCustomer.customer_code;
+                            ctx.fillText(code, 560, 1760);
                         }
                         this.finalStripUrl = canvas.toDataURL('image/png');
                     });

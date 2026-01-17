@@ -569,16 +569,26 @@
                         });
 
                         ctx.fillStyle = 'white';
-                        ctx.font = '200 28px "Inconsolata", monospace';
+
+                        // Rotate date text vertically (90 degrees counterclockwise)
+                        ctx.save();
+                        ctx.translate(28, 1250);
+                        ctx.rotate(-Math.PI / 2);
+                        ctx.font = '200 18px "Inconsolata", monospace';
                         ctx.textAlign = 'left';
-                        ctx.fillText(this.dateText, 40, 1760);
+                        ctx.fillText(this.dateText, 0, 0);
+                        ctx.restore();
 
                         if (this.selectedCustomer) {
-                            ctx.font = '200 28px "Inconsolata", monospace';
+                            ctx.font = '200 18px "Inconsolata", monospace';
                             ctx.textAlign = 'right';
                             let code = this.selectedCustomer.customer_code.split('-')[1] || this.selectedCustomer.customer_code;
-                            ctx.fillText(code, 560, 1760);
+                            ctx.fillText(code, 560, 28);
                         }
+
+                        ctx.font = '200 18px "Inconsolata", monospace';
+                        ctx.textAlign = 'left'; // ซ้าย/กลาง/ขวา
+                        ctx.fillText('msj', 40, 28); // X=300 (กลาง), Y=1780 (ล่างสุด)
                         this.finalStripUrl = canvas.toDataURL('image/png');
                     });
                 },

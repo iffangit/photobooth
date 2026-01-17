@@ -7,45 +7,53 @@ require '../includes/config.php';
 require '../includes/csrf.php';
 require '../includes/rate_limiter.php';
 
+$rawInput = file_get_contents('php://input');
+$jsonData = json_decode($rawInput, true) ?? [];
+
 $action = $_GET['action'] ?? '';
 
 // HELPER: Validate CSRF for POST requests
-function validateCSRF()
+function validateCSRF($jsonData)
 {
     $token = '';
-    // Check Header
+
+    // 1. Check Header
     foreach (getallheaders() as $name => $value) {
         if (strcasecmp($name, 'X-CSRF-TOKEN') == 0) {
             $token = $value;
             break;
         }
     }
-    // Check POST data
+
+    // 2. Check POST data
     if (empty($token) && !empty($_POST['csrf_token'])) {
         $token = $_POST['csrf_token'];
     }
-    // Check JSON body
-    if (empty($token)) {
-        $input = json_decode(file_get_contents('php://input'), true);
-        if (!empty($input['csrf_token'])) {
-            $token = $input['csrf_token'];
-        }
+
+    // 3. Check JSON body
+    if (empty($token) && !empty($jsonData['csrf_token'])) {
+        $token = $jsonData['csrf_token'];
     }
 
     if (!CSRF::check($token)) {
         http_response_code(403);
-        echo json_encode(['success' => false, 'error' => 'Invalid CSRF Token']);
+        echo json_encode([
+            'success' => false,
+            'error' => 'Invalid CSRF Token',
+            'debug' => [
+                'received_token' => $token ? 'yes' : 'no'
+            ]
+        ]);
         exit;
     }
 }
 
 // Helper: Get input (POST or JSON)
-function getInput()
+function getInput($jsonData)
 {
     if (!empty($_POST))
         return $_POST;
-    $json = json_decode(file_get_contents('php://input'), true);
-    return is_array($json) ? $json : [];
+    return $jsonData;
 }
 
 // 0. GENERATE CSRF TOKEN (Action)
@@ -56,10 +64,7 @@ if ($action === 'get_csrf_token') {
 
 // 1. REGISTER
 if ($action === 'register' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Ideally protect register too, but public pages might be tricky with simple session/form token for mobile users.
-    // We'll relax CSRF for register if easy access is needed, BUT it's better to secure it.
-    // Let's assume we will pass token from frontend.
-    validateCSRF();
+    validateCSRF($jsonData);
 
     $name = $_POST['name'] ?? '';
     $contact = $_POST['contact'] ?? '';
@@ -90,7 +95,7 @@ if ($action === 'register' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // LOGIN
 if ($action === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    validateCSRF();
+    validateCSRF($jsonData);
 
     // Check Rate Limit (5 attempts per 5 minutes)
     if (!RateLimiter::check('login_attempt', 5, 300)) {
@@ -145,9 +150,9 @@ if ($action === 'update_status' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         // Optionally allow customers to update their own status via selfie page without login?
         // For now, let's just validate CSRF which implies they visited the site
     }
-    validateCSRF();
+    validateCSRF($jsonData);
 
-    $data = getInput();
+    $data = getInput($jsonData);
     $stmt = $pdo->prepare("UPDATE queue SET status = ? WHERE customer_code = ?");
     $stmt->execute([$data['status'], $data['id']]);
     echo json_encode(['success' => true]);
@@ -156,8 +161,8 @@ if ($action === 'update_status' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // 4. UPDATE QUANTITY
 if ($action === 'update_qty' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    validateCSRF();
-    $data = getInput();
+    validateCSRF($jsonData);
+    $data = getInput($jsonData);
     $stmt = $pdo->prepare("UPDATE queue SET quantity = ? WHERE customer_code = ?");
     $stmt->execute([$data['qty'], $data['id']]);
     echo json_encode(['success' => true]);
@@ -166,9 +171,9 @@ if ($action === 'update_qty' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // 5. UPLOAD IMAGE (Base64)
 if ($action === 'upload_image' && $_SERVER['REQUEST_METHOD'] === 'POST') {
-    validateCSRF();
+    validateCSRF($jsonData);
 
-    $data = getInput();
+    $data = getInput($jsonData);
     $imageData = $data['image']; // Base64 string
     $customerId = $data['id'];
     $index = $data['index']; // 1, 2, 3 or 'final'

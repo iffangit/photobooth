@@ -445,8 +445,11 @@ require_once '../includes/csrf.php';
                 dateText: new Date().toLocaleDateString('en-GB'),
                 backgroundType: 'color',
                 backgroundColor: '#000000',
+                backgroundType: 'color',
+                backgroundColor: '#000000',
                 customBgImage: null,
-                finalStripUrl: null
+                finalStripUrl: null,
+                csrfToken: ''
             },
             computed: {
                 filteredQueue() {
@@ -459,6 +462,9 @@ require_once '../includes/csrf.php';
                 }
             },
             mounted() {
+                this.csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+                axios.defaults.headers.common['X-CSRF-TOKEN'] = this.csrfToken;
+
                 this.fetchQueue();
                 setInterval(this.fetchQueue, 5000);
             },
@@ -494,13 +500,21 @@ require_once '../includes/csrf.php';
                         });
                 },
                 updateStatus(id, status) {
-                    axios.post('../api/api.php?action=update_status', { id, status });
+                    axios.post('../api/api.php?action=update_status', {
+                        id,
+                        status,
+                        csrf_token: this.csrfToken
+                    });
                     if (this.selectedCustomer && this.selectedCustomer.customer_code === id) {
                         this.selectedCustomer.status = status;
                     }
                 },
                 updateQty() {
-                    axios.post('../api/api.php?action=update_qty', { id: this.selectedCustomer.customer_code, qty: this.selectedCustomer.quantity });
+                    axios.post('../api/api.php?action=update_qty', {
+                        id: this.selectedCustomer.customer_code,
+                        qty: this.selectedCustomer.quantity,
+                        csrf_token: this.csrfToken
+                    });
                 },
                 increaseQty() {
                     this.selectedCustomer.quantity = parseInt(this.selectedCustomer.quantity) + 1;

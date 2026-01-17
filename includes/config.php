@@ -2,6 +2,11 @@
 // config.php
 require_once __DIR__ . '/env_loader.php';
 
+// Ensure consistent session handling across all directories
+if (session_status() === PHP_SESSION_NONE) {
+    session_set_cookie_params(0, '/');
+}
+
 // Load .env from root directory
 $envPath = __DIR__ . '/../.env';
 if (file_exists($envPath)) {

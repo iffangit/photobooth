@@ -351,7 +351,8 @@ require_once '../includes/csrf.php';
                 photosTaken: 0,
                 showSuccessModal: false,
                 stream: null,
-                showFlash: false
+                showFlash: false,
+                csrfToken: ''
             },
             computed: {
                 displayCustomerCode() {
@@ -361,9 +362,9 @@ require_once '../includes/csrf.php';
                 }
             },
             mounted() {
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+                this.csrfToken = document.querySelector('meta[name="csrf-token"]').content;
                 // Set global Axios default
-                axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+                axios.defaults.headers.common['X-CSRF-TOKEN'] = this.csrfToken;
 
                 this.fetchQueue();
                 setInterval(this.fetchQueue, 5000);
@@ -388,7 +389,8 @@ require_once '../includes/csrf.php';
                     // Update status to Shooting
                     axios.post('../api/api.php?action=update_status', {
                         id: customer.customer_code,
-                        status: 'กำลังถ่าย'
+                        status: 'กำลังถ่าย',
+                        csrf_token: this.csrfToken  // Backup for header
                     }).catch(console.error);
                 },
 
@@ -514,14 +516,16 @@ require_once '../includes/csrf.php';
                             await axios.post('../api/api.php?action=upload_image', {
                                 image: this.shots[i],
                                 id: customerId,
-                                index: i + 1
+                                index: i + 1,
+                                csrf_token: this.csrfToken
                             });
                         }
 
                         // Update status to WaitingPrint
                         await axios.post('../api/api.php?action=update_status', {
                             id: customerId,
-                            status: 'รอปริ้น'
+                            status: 'รอปริ้น',
+                            csrf_token: this.csrfToken
                         });
 
                         Swal.close();
@@ -550,7 +554,8 @@ require_once '../includes/csrf.php';
                     if (this.selectedCustomer) {
                         axios.post('../api/api.php?action=update_status', {
                             id: this.selectedCustomer.customer_code,
-                            status: 'ลงทะเบียนแล้ว'
+                            status: 'ลงทะเบียนแล้ว',
+                            csrf_token: this.csrfToken
                         }).catch(console.error);
                     }
                     this.resetSession();

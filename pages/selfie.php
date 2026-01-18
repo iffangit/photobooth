@@ -496,7 +496,7 @@ require_once '../includes/csrf.php';
                         this.photosTaken++;
 
                         if (i < 2) {
-                            await this.sleep(2500); // Brief pause before next countdown starts
+                            await this.sleep(2000); // Brief pause before next countdown starts
                         }
                     }
 

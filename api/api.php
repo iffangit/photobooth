@@ -18,11 +18,19 @@ function validateCSRF($jsonData)
     $token = '';
 
     // 1. Check Header
-    foreach (getallheaders() as $name => $value) {
-        if (strcasecmp($name, 'X-CSRF-TOKEN') == 0) {
-            $token = $value;
-            break;
+    // 1. Check Header (Try getallheaders() usually Apache)
+    if (function_exists('getallheaders')) {
+        foreach (getallheaders() as $name => $value) {
+            if (strcasecmp($name, 'X-CSRF-TOKEN') == 0) {
+                $token = $value;
+                break;
+            }
         }
+    }
+
+    // 1b. Check Header Fallback (Nginx/FPM)
+    if (empty($token) && !empty($_SERVER['HTTP_X_CSRF_TOKEN'])) {
+        $token = $_SERVER['HTTP_X_CSRF_TOKEN'];
     }
 
     // 2. Check POST data

@@ -43,10 +43,6 @@
 
         <!-- Public Section -->
         <div class="mb-12">
-            <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                <i class="bi bi-globe text-indigo-400"></i>
-                สำหรับลูกค้า
-            </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Register Card -->
                 <a href="pages/register.php"
@@ -62,7 +58,7 @@
                         </div>
                         <div class="flex-1">
                             <h3 class="text-2xl font-bold text-white mb-1">ลงทะเบียน</h3>
-                            <p class="text-zinc-400 text-sm">สมัครเข้าคิวถ่ายรูป</p>
+                            <p class="text-zinc-400 text-sm">ลงทะเบียนเข้าคิวถ่ายรูป</p>
                         </div>
                         <i class="bi bi-arrow-right text-2xl text-zinc-600 group-hover:text-white transition"></i>
                     </div>

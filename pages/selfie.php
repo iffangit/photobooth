@@ -342,7 +342,7 @@ require_once '../includes/csrf.php';
                     <i class="bi bi-check-lg text-6xl text-white"></i>
                 </div>
                 <h2 class="text-5xl font-bold text-white mb-4">เสร็จสิ้น!</h2>
-                <p class="text-2xl text-zinc-300 mb-2">กรุณารอรับรูปที่จุดปริ้น</p>
+                <p class="text-2xl text-zinc-300 mb-2">รอรับรูปได้ที่ห้องชมรม MSJ</p>
                 <p class="text-xl text-zinc-500 font-mono mb-8">รหัสคิว: {{ displayCustomerCode }}</p>
                 <button @click="closeSuccessModal"
                     class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-12 py-4 rounded-xl transition text-lg font-semibold shadow-lg">

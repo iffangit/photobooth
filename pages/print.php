@@ -14,7 +14,7 @@ require_once '../includes/csrf.php';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../assets/js/modal.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
@@ -634,7 +634,11 @@ require_once '../includes/csrf.php';
                     try {
                         const printWindow = window.open('', '', 'height=600,width=800');
                         if (!printWindow) {
-                            Swal.fire({ icon: 'error', title: 'Popup Blocked', text: 'กรุณาอนุญาต Pop-up สำหรับเว็บไซต์นี้', background: '#1a1a1a', color: '#fff' });
+                            MSJModal.show({
+                                title: 'Popup Blocked',
+                                text: 'กรุณาอนุญาต Pop-up สำหรับเว็บไซต์นี้',
+                                icon: 'error'
+                            });
                             return;
                         }
 
@@ -652,7 +656,11 @@ require_once '../includes/csrf.php';
                         printWindow.focus();
                         setTimeout(() => { printWindow.print(); printWindow.close(); }, 500);
                     } catch (e) {
-                        Swal.fire({ icon: 'error', title: 'Print Error', text: e.message, background: '#1a1a1a', color: '#fff' });
+                        MSJModal.show({
+                            title: 'Print Error',
+                            text: e.message,
+                            icon: 'error'
+                        });
                     }
                 },
                 showToast(message, type = 'info') {

@@ -94,10 +94,6 @@
         </div>
 
         <div class="mt-12 text-center">
-            <a href="queue.php" target="_blank"
-                class="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors text-sm mr-4">
-                <i class="bi bi-display"></i> เปิดหน้าจอคิว (Queue Display)
-            </a>
             <button onclick="logout()"
                 class="inline-flex items-center gap-2 text-red-500 hover:text-red-400 transition-colors text-sm">
                 <i class="bi bi-box-arrow-right"></i> ออกจากระบบ
@@ -105,17 +101,25 @@
         </div>
     </div>
 
+    <script src="../assets/js/modal.js"></script>
     <script>
         function logout() {
-            if (confirm('ต้องการออกจากระบบหรือไม่?')) {
-                fetch('../api/api.php?action=logout')
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            window.location.href = '../login.php';
-                        }
-                    });
-            }
+            MSJModal.show({
+                title: 'ยืนยันการออกจากระบบ',
+                text: 'คุณต้องการออกจากระบบใช่หรือไม่?',
+                icon: 'warning',
+                confirmText: 'ออกจากระบบ',
+                showCancel: true,
+                onConfirm: () => {
+                    fetch('../api/api.php?action=logout')
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                window.location.href = '../login.php';
+                            }
+                        });
+                }
+            });
         }
     </script>
 </body>

@@ -15,7 +15,7 @@ require_once '../includes/csrf.php';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../assets/js/modal.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap');
 
@@ -459,11 +459,11 @@ require_once '../includes/csrf.php';
                         });
                         this.$refs.video.srcObject = this.stream;
                     } catch (err) {
-                        Swal.fire({
+                        MSJModal.show({
                             title: 'ไม่สามารถเข้าถึงกล้อง',
                             text: 'กรุณาอนุญาตการใช้งานกล้องในการตั้งค่า',
                             icon: 'error',
-                            confirmButtonColor: '#4f46e5'
+                            confirmText: 'ตกลง'
                         });
                         this.cancelSession();
                     }
@@ -556,11 +556,7 @@ require_once '../includes/csrf.php';
 
                     try {
                         // Show loading
-                        Swal.fire({
-                            title: 'กำลังบันทึกรูปภาพ...',
-                            allowOutsideClick: false,
-                            didOpen: () => Swal.showLoading()
-                        });
+                        MSJModal.showLoading('กำลังบันทึกรูปภาพ...');
 
                         // Upload all 3 photos
                         for (let i = 0; i < 3; i++) {
@@ -579,14 +575,14 @@ require_once '../includes/csrf.php';
                             csrf_token: this.csrfToken
                         });
 
-                        Swal.close();
+                        MSJModal.close();
                         this.showSuccessModal = true;
                     } catch (err) {
-                        Swal.fire({
+                        MSJModal.show({
                             title: 'เกิดข้อผิดพลาด',
                             text: 'ไม่สามารถบันทึกรูปภาพได้ กรุณาลองใหม่อีกครั้ง',
                             icon: 'error',
-                            confirmButtonColor: '#d33'
+                            confirmText: 'ลองใหม่'
                         });
                     }
                 },

@@ -108,7 +108,7 @@ require_once '../includes/csrf.php';
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../assets/js/modal.js"></script>
     <script>
         document.getElementById('regForm').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -129,35 +129,28 @@ require_once '../includes/csrf.php';
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        Swal.fire({
+                        MSJModal.show({
                             title: 'ลงทะเบียนสำเร็จ!',
-                            html: 'รหัสคิวของคุณคือ:<br><strong class="text-3xl text-indigo-500">' + data.id + '</strong>',
+                            text: 'รหัสคิวของคุณคือ:<br><strong class="text-3xl text-indigo-400 font-mono mt-2 block">' + data.id + '</strong>',
                             icon: 'success',
-                            background: '#1a1a1a',
-                            color: '#ffffff',
-                            confirmButtonColor: '#4f46e5',
-                            confirmButtonText: 'ตกลง'
+                            confirmText: 'ตกลง'
                         });
                         this.reset();
                     } else {
-                        Swal.fire({
+                        MSJModal.show({
                             title: 'เกิดข้อผิดพลาด',
                             text: data.error,
                             icon: 'error',
-                            background: '#1a1a1a',
-                            color: '#ffffff',
-                            confirmButtonColor: '#d33'
+                            confirmText: 'ลองใหม่'
                         });
                     }
                 })
                 .catch(err => {
-                    Swal.fire({
+                    MSJModal.show({
                         title: 'เชื่อมต่อล้มเหลว',
                         text: 'กรุณาลองใหม่อีกครั้ง',
                         icon: 'error',
-                        background: '#1a1a1a',
-                        color: '#ffffff',
-                        confirmButtonColor: '#d33'
+                        confirmText: 'ปิด'
                     });
                 })
                 .finally(() => {

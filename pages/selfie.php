@@ -205,8 +205,7 @@ require_once '../includes/csrf.php';
                             พร้อมแล้ว! เริ่มเลย
                         </button>
 
-                        <button @click="currentScreen = 'queue'; selectedCustomer = null"
-                            class="mt-4 text-zinc-500 hover:text-zinc-300 text-sm py-2">
+                        <button @click="cancelSession" class="mt-4 text-zinc-500 hover:text-zinc-300 text-sm py-2">
                             ยกเลิก
                         </button>
                     </div>
@@ -388,6 +387,20 @@ require_once '../includes/csrf.php';
                 this.fetchQueue();
                 setInterval(this.fetchQueue, 5000);
                 this.getDevices();
+
+                // Recovery: Check for stuck session
+                const stuckCustomer = localStorage.getItem('photobooth_active_customer');
+                if (stuckCustomer) {
+                    axios.post('../api/api.php?action=update_status', {
+                        id: stuckCustomer,
+                        status: 'ลงทะเบียนแล้ว',
+                        csrf_token: this.csrfToken
+                    }).then(() => {
+                        console.log('Restored stuck session:', stuckCustomer);
+                        localStorage.removeItem('photobooth_active_customer');
+                        this.fetchQueue();
+                    }).catch(console.error);
+                }
             },
             methods: {
                 async getDevices() {
@@ -415,6 +428,7 @@ require_once '../includes/csrf.php';
 
                 selectCustomer(customer) {
                     this.selectedCustomer = customer;
+                    localStorage.setItem('photobooth_active_customer', customer.customer_code);
                     this.shots = [];
                     this.photosTaken = 0;
                     this.currentScreen = 'instructions';
@@ -451,7 +465,7 @@ require_once '../includes/csrf.php';
                             icon: 'error',
                             confirmButtonColor: '#4f46e5'
                         });
-                        this.resetSession();
+                        this.cancelSession();
                     }
                 },
 
@@ -601,6 +615,7 @@ require_once '../includes/csrf.php';
                 resetSession() {
                     this.stopCamera();
                     this.selectedCustomer = null;
+                    localStorage.removeItem('photobooth_active_customer');
                     this.shots = [];
                     this.photosTaken = 0;
                     this.countdown = 0;

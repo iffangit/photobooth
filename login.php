@@ -14,6 +14,7 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="assets/logo.png">
     <title>Login - MSJ-BOOTH</title>
     <meta name="csrf-token" content="<?php echo CSRF::generate(); ?>">
     <script src="https://cdn.tailwindcss.com"></script>

@@ -17,3 +17,10 @@ CREATE TABLE IF NOT EXISTS admins (
     password_hash VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Default Admin User
+-- Username: admin
+-- Password: @msjbooth2026
+INSERT INTO admins (username, password_hash) 
+SELECT 'admin', '$2y$10$Gc2O7zIdAhAkppsl1w8B8OIVG2JNNkLMj8vXqvPRgikR2MRKY4ua2'
+WHERE NOT EXISTS (SELECT 1 FROM admins WHERE username = 'admin');

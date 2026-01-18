@@ -9,6 +9,7 @@ require_once '../includes/csrf.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo CSRF::generate(); ?>">
+    <link rel="icon" type="image/png" href="../assets/logo.png">
     <title>ลงทะเบียน - MSJ-BOOTH</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
@@ -132,7 +133,7 @@ require_once '../includes/csrf.php';
                         const shortId = data.id.split('-')[1] || data.id;
                         MSJModal.show({
                             title: 'ลงทะเบียนสำเร็จ!',
-                            text: 'รหัสคิวของคุณคือ<br><strong class="text-3xl text-indigo-400 font-mono mt-2 block">' + shortId + '</strong>',
+                            text: 'รหัสคิวของคุณคือ<br><strong class="text-3xl text-indigo-400 font-mono mt-2 block">' + shortId + '</strong>กรุณาเก็บรหัสคิวนี้ไว้',
                             icon: 'success',
                             confirmText: 'ตกลง'
                         });

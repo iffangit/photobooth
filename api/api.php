@@ -192,6 +192,9 @@ if ($action === 'upload_image' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     // Prevent directory traversal
     $fileName = basename("{$customerId}_{$index}.png");
     $targetDir = __DIR__ . '/../uploads/';
+    if (!file_exists($targetDir)) {
+        mkdir($targetDir, 0777, true);
+    }
     $filePath = $targetDir . $fileName;
 
     if (file_put_contents($filePath, $imageBytes)) {

@@ -129,9 +129,10 @@ require_once '../includes/csrf.php';
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
+                        const shortId = data.id.split('-')[1] || data.id;
                         MSJModal.show({
                             title: 'ลงทะเบียนสำเร็จ!',
-                            text: 'รหัสคิวของคุณคือ:<br><strong class="text-3xl text-indigo-400 font-mono mt-2 block">' + data.id + '</strong>',
+                            text: 'รหัสคิวของคุณคือ<br><strong class="text-3xl text-indigo-400 font-mono mt-2 block">' + shortId + '</strong>',
                             icon: 'success',
                             confirmText: 'ตกลง'
                         });

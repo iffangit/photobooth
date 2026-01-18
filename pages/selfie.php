@@ -276,6 +276,21 @@ require_once '../includes/csrf.php';
                                 <p class="text-xs text-zinc-500">กดเพื่อถ่าย</p>
                             </div>
                         </div>
+
+                        <!-- Camera Selection (Hidden if only 1 camera) -->
+                        <div v-if="videoDevices.length > 1" class="absolute right-6 top-1/2 -translate-y-1/2">
+                            <div class="relative">
+                                <select v-model="selectedDeviceId" @change="startCamera"
+                                    class="appearance-none bg-black/50 text-white pl-10 pr-4 py-2 rounded-xl border border-white/20 text-sm focus:outline-none focus:border-indigo-500 cursor-pointer hover:bg-black/70 transition">
+                                    <option v-for="(device, index) in videoDevices" :key="device.deviceId"
+                                        :value="device.deviceId">
+                                        {{ device.label || 'กล้อง ' + (index + 1) }}
+                                    </option>
+                                </select>
+                                <i
+                                    class="bi bi-camera-video-fill absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </transition>
@@ -352,7 +367,11 @@ require_once '../includes/csrf.php';
                 showSuccessModal: false,
                 stream: null,
                 showFlash: false,
-                csrfToken: ''
+                stream: null,
+                showFlash: false,
+                csrfToken: '',
+                videoDevices: [],
+                selectedDeviceId: ''
             },
             computed: {
                 displayCustomerCode() {
@@ -368,8 +387,22 @@ require_once '../includes/csrf.php';
 
                 this.fetchQueue();
                 setInterval(this.fetchQueue, 5000);
+                this.getDevices();
             },
             methods: {
+                async getDevices() {
+                    try {
+                        const devices = await navigator.mediaDevices.enumerateDevices();
+                        this.videoDevices = devices.filter(device => device.kind === 'videoinput');
+                        // Select first device if valid and nothing selected
+                        if (this.videoDevices.length > 0 && !this.selectedDeviceId) {
+                            this.selectedDeviceId = this.videoDevices[0].deviceId;
+                        }
+                    } catch (err) {
+                        console.error('Error getting devices:', err);
+                    }
+                },
+
                 fetchQueue() {
                     axios.get('../api/api.php?action=get_queue')
                         .then(res => {
@@ -404,7 +437,11 @@ require_once '../includes/csrf.php';
                 async startCamera() {
                     try {
                         this.stream = await navigator.mediaDevices.getUserMedia({
-                            video: { facingMode: 'user', width: 1280, height: 720 }
+                            video: {
+                                deviceId: this.selectedDeviceId ? { exact: this.selectedDeviceId } : undefined,
+                                width: { ideal: 1280 },
+                                height: { ideal: 720 }
+                            }
                         });
                         this.$refs.video.srcObject = this.stream;
                     } catch (err) {

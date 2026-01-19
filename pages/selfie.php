@@ -333,24 +333,7 @@ require_once '../includes/csrf.php';
             </transition>
         </div>
 
-        <!-- Success Modal -->
-        <div v-if="showSuccessModal"
-            class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-50">
-            <div
-                class="bg-zinc-900/90 backdrop-blur-xl border border-white/10 rounded-3xl p-12 max-w-2xl mx-4 text-center">
-                <div
-                    class="w-24 h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full mx-auto mb-6 flex items-center justify-center">
-                    <i class="bi bi-check-lg text-6xl text-white"></i>
-                </div>
-                <h2 class="text-5xl font-bold text-white mb-4">เสร็จสิ้น!</h2>
-                <p class="text-2xl text-zinc-300 mb-2">รอรับรูปได้ที่ห้องชมรม MSJ</p>
-                <p class="text-xl text-zinc-500 font-mono mb-8">รหัสคิว: {{ displayCustomerCode }}</p>
-                <button @click="closeSuccessModal"
-                    class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-12 py-4 rounded-xl transition text-lg font-semibold shadow-lg">
-                    ตกลง
-                </button>
-            </div>
-        </div>
+
     </div>
 
     <script>
@@ -364,7 +347,6 @@ require_once '../includes/csrf.php';
                 isCapturing: false,
                 countdown: 0,
                 photosTaken: 0,
-                showSuccessModal: false,
                 stream: null,
                 showFlash: false,
                 stream: null,
@@ -374,11 +356,6 @@ require_once '../includes/csrf.php';
                 selectedDeviceId: ''
             },
             computed: {
-                displayCustomerCode() {
-                    if (!this.selectedCustomer || !this.selectedCustomer.customer_code) return '';
-                    const parts = this.selectedCustomer.customer_code.split('-');
-                    return parts.length > 1 ? parts[1] : this.selectedCustomer.customer_code;
-                }
             },
             mounted() {
                 this.csrfToken = document.querySelector('meta[name="csrf-token"]').content;
@@ -597,8 +574,21 @@ require_once '../includes/csrf.php';
                             csrf_token: this.csrfToken
                         });
 
-                        MSJModal.close();
-                        this.showSuccessModal = true;
+                        MSJModal.close(); // Close loading
+
+                        // Wait for close animation to finish (350ms > 300ms animation)
+                        setTimeout(() => {
+                            const shortId = customerId.split('-')[1] || customerId;
+                            MSJModal.show({
+                                title: 'ถ่ายรูปเสร็จสิ้น!',
+                                text: 'รอรับรูปได้ที่ห้องชมรม MSJ<br><strong class="text-3xl text-indigo-400 font-mono mt-2 block">' + shortId + '</strong>กรุณาเก็บรหัสคิวนี้ไว้',
+                                icon: 'success',
+                                confirmText: 'ตกลง',
+                                onConfirm: () => {
+                                    this.resetSession();
+                                }
+                            });
+                        }, 350);
                     } catch (err) {
                         MSJModal.show({
                             title: 'เกิดข้อผิดพลาด',
@@ -640,11 +630,6 @@ require_once '../includes/csrf.php';
                     this.isCapturing = false;
                     this.currentScreen = 'queue';
                     this.fetchQueue();
-                },
-
-                closeSuccessModal() {
-                    this.showSuccessModal = false;
-                    this.resetSession();
                 },
 
                 sleep(ms) {

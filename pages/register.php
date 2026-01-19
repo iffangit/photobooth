@@ -79,7 +79,7 @@ require_once '../includes/csrf.php';
 
                 <div>
                     <label class="block text-xs font-bold text-zinc-400 mb-2 uppercase tracking-wider">
-                        จำนวนแท่งรูปที่ต้องการ (แท่งละ 20 บาท) ขั้นต่ำ 3 แท่ง
+                        จำนวนแท่งรูป (แท่งละ 20 บาท) ขั้นต่ำ 3
                     </label>
                     <div class="relative group">
                         <i

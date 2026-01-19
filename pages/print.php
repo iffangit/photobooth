@@ -447,7 +447,7 @@ require_once '../includes/csrf.php';
                 backgroundType: 'color',
                 backgroundColor: '#ffffffff',
                 backgroundType: 'color',
-                backgroundColor: '#000000',
+                backgroundColor: '#ffffffff',
                 customBgImage: null,
                 finalStripUrl: null,
                 csrfToken: ''
@@ -544,6 +544,8 @@ require_once '../includes/csrf.php';
                 drawStrip() {
                     const canvas = document.getElementById('stripCanvas');
                     const ctx = canvas.getContext('2d');
+                    // Clear canvas first to prevent overlapping text/images
+                    ctx.clearRect(0, 0, 600, 1800);
 
                     if (this.backgroundType === 'image' && this.customBgImage) {
                         ctx.drawImage(this.customBgImage, 0, 0, 600, 1800);
@@ -592,7 +594,7 @@ require_once '../includes/csrf.php';
                             ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
                         });
 
-                        ctx.fillStyle = 'white';
+                        ctx.fillStyle = 'black';
 
                         // Rotate date text vertically (90 degrees counterclockwise)
                         ctx.save();

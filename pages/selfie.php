@@ -280,7 +280,7 @@ require_once '../includes/csrf.php';
                         <!-- Camera Selection (Hidden if only 1 camera) -->
                         <div v-if="videoDevices.length > 0" class="absolute right-6 top-1/2 -translate-y-1/2">
                             <div class="relative">
-                                <select v-model="selectedDeviceId" @change="startCamera"
+                                <select v-model="selectedDeviceId" @change="handleCameraChange"
                                     class="appearance-none bg-black/50 text-white pl-10 pr-4 py-2 rounded-xl border border-white/20 text-sm focus:outline-none focus:border-indigo-500 cursor-pointer hover:bg-black/70 transition">
                                     <option v-for="(device, index) in videoDevices" :key="device.deviceId"
                                         :value="device.deviceId">
@@ -413,8 +413,15 @@ require_once '../includes/csrf.php';
                     try {
                         const devices = await navigator.mediaDevices.enumerateDevices();
                         this.videoDevices = devices.filter(device => device.kind === 'videoinput');
-                        // Select first device if valid and nothing selected
-                        if (this.videoDevices.length > 0 && !this.selectedDeviceId) {
+
+                        // Restore saved camera if exists and is valid
+                        const savedId = localStorage.getItem('photobooth_camera_id');
+                        const savedDeviceExists = this.videoDevices.find(d => d.deviceId === savedId);
+
+                        if (savedId && savedDeviceExists) {
+                            this.selectedDeviceId = savedId;
+                        } else if (this.videoDevices.length > 0 && !this.selectedDeviceId) {
+                            // Select first device if nothing valid selected
                             this.selectedDeviceId = this.videoDevices[0].deviceId;
                         }
                     } catch (err) {
@@ -445,6 +452,11 @@ require_once '../includes/csrf.php';
                         status: 'กำลังถ่าย',
                         csrf_token: this.csrfToken  // Backup for header
                     }).catch(console.error);
+                },
+
+                handleCameraChange() {
+                    localStorage.setItem('photobooth_camera_id', this.selectedDeviceId);
+                    this.startCamera();
                 },
 
                 startSession() {

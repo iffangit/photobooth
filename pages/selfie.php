@@ -278,7 +278,7 @@ require_once '../includes/csrf.php';
                         </div>
 
                         <!-- Camera Selection (Hidden if only 1 camera) -->
-                        <div v-if="videoDevices.length > 1" class="absolute right-6 top-1/2 -translate-y-1/2">
+                        <div v-if="videoDevices.length > 0" class="absolute right-6 top-1/2 -translate-y-1/2">
                             <div class="relative">
                                 <select v-model="selectedDeviceId" @change="startCamera"
                                     class="appearance-none bg-black/50 text-white pl-10 pr-4 py-2 rounded-xl border border-white/20 text-sm focus:outline-none focus:border-indigo-500 cursor-pointer hover:bg-black/70 transition">
@@ -402,6 +402,11 @@ require_once '../includes/csrf.php';
                         this.fetchQueue();
                     }).catch(console.error);
                 }
+
+                // Listen for device changes (plug/unplug)
+                navigator.mediaDevices.ondevicechange = () => {
+                    this.getDevices();
+                };
             },
             methods: {
                 async getDevices() {
@@ -459,6 +464,10 @@ require_once '../includes/csrf.php';
                             }
                         });
                         this.$refs.video.srcObject = this.stream;
+
+                        // Refresh device list now that we have permission
+                        // This often reveals non-default cameras that were hidden before permission
+                        await this.getDevices();
                     } catch (err) {
                         MSJModal.show({
                             title: 'ไม่สามารถเข้าถึงกล้อง',

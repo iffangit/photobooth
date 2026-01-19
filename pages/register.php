@@ -79,12 +79,12 @@ require_once '../includes/csrf.php';
 
                 <div>
                     <label class="block text-xs font-bold text-zinc-400 mb-2 uppercase tracking-wider">
-                        จำนวนแท่งรูปที่ต้องการ
+                        จำนวนแท่งรูปที่ต้องการ (แท่งละ 20 บาท) ขั้นต่ำ 3 แท่ง
                     </label>
                     <div class="relative group">
                         <i
                             class="bi bi-images absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500 group-focus-within:text-white transition"></i>
-                        <input type="number" name="qty" value="1" min="1" max="10"
+                        <input type="number" name="qty" value="3" min="3" max="20"
                             class="w-full pl-12 pr-4 py-4 rounded-xl bg-white/5 border border-white/10 focus:border-indigo-500 focus:bg-white/10 focus:ring-1 focus:ring-indigo-500 outline-none transition text-white placeholder-zinc-600 appearance-none"
                             required>
                     </div>

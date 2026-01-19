@@ -445,7 +445,7 @@ require_once '../includes/csrf.php';
                 toasts: [],
                 dateText: new Date().toLocaleDateString('en-GB'),
                 backgroundType: 'color',
-                backgroundColor: '#000000',
+                backgroundColor: '#ffffffff',
                 backgroundType: 'color',
                 backgroundColor: '#000000',
                 customBgImage: null,
@@ -522,7 +522,7 @@ require_once '../includes/csrf.php';
                     this.updateQty();
                 },
                 decreaseQty() {
-                    if (this.selectedCustomer.quantity > 1) {
+                    if (this.selectedCustomer.quantity > 3) {
                         this.selectedCustomer.quantity = parseInt(this.selectedCustomer.quantity) - 1;
                         this.updateQty();
                     }

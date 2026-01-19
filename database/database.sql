@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS photobooth_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE photobooth_db;
+-- Removed CREATE DATABASE to compatible with Shared Hosting
+-- Please select your database in phpMyAdmin before importing
 
 CREATE TABLE IF NOT EXISTS queue (
     id INT AUTO_INCREMENT PRIMARY KEY,

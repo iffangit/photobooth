@@ -146,7 +146,7 @@ if ($action === 'logout') {
 
 // 2. GET QUEUE
 if ($action === 'get_queue') {
-    $stmt = $pdo->query("SELECT * FROM queue ORDER BY id DESC");
+    $stmt = $pdo->query("SELECT * FROM queue WHERE (status = 'ลงทะเบียนแล้ว' AND DATE(created_at) = CURDATE()) OR (status != 'ลงทะเบียนแล้ว') ORDER BY id DESC");
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode($data);
     exit;

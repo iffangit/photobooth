@@ -140,7 +140,19 @@ require_once '../includes/csrf.php';
                 </button>
             </div>
 
-            <div class="p-3">
+            <div class="p-3 space-y-2">
+                <!-- Search Input -->
+                <div class="relative">
+                    <input type="text" v-model="searchQuery" placeholder="ค้นหาชื่อ หรือ รหัสคิว..."
+                        class="w-full bg-white/5 border border-white/10 rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:bg-white/10 transition">
+                    <i
+                        class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none text-xs"></i>
+                    <button v-if="searchQuery" @click="searchQuery = ''"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white">
+                        <i class="bi bi-x-lg text-xs"></i>
+                    </button>
+                </div>
+
                 <button @click="fetchQueue"
                     class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium px-3 py-2 rounded-lg transition flex items-center justify-center gap-2 text-sm">
                     <i class="bi bi-arrow-clockwise text-xs"></i>
@@ -450,16 +462,27 @@ require_once '../includes/csrf.php';
                 backgroundColor: '#ffffffff',
                 customBgImage: null,
                 finalStripUrl: null,
+                searchQuery: '',
                 csrfToken: ''
             },
             computed: {
                 filteredQueue() {
-                    return this.queue.filter(c =>
+                    let filtered = this.queue.filter(c =>
                         c.status === 'WaitingPrint' ||
                         c.status === 'รอปริ้น' ||
                         c.status === 'WaitingDeliver' ||
                         c.status === 'รอส่งมอบ'
                     );
+
+                    if (this.searchQuery) {
+                        const lowerQuery = this.searchQuery.toLowerCase();
+                        filtered = filtered.filter(c =>
+                            c.name.toLowerCase().includes(lowerQuery) ||
+                            c.customer_code.toLowerCase().includes(lowerQuery)
+                        );
+                    }
+
+                    return filtered;
                 }
             },
             mounted() {

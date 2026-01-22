@@ -246,7 +246,7 @@
                     doneQueue() {
                         return this.queue.filter(c =>
                             ['ส่งมอบแล้ว', 'Delivered'].includes(c.status)
-                        ).sort((a, b) => b.id - a.id).slice(0, 10);
+                        ).sort((a, b) => b.id - a.id);
                     }
                 },
                 mounted() {
